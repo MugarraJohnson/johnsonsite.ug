@@ -266,9 +266,7 @@ section { padding: 5.5rem 5%; position: relative; z-index: 1; }
 }
 .s-sub { color: var(--muted); font-size: .93rem; max-width: 500px; line-height: 1.75; margin-bottom: 2.8rem; }
 
-/* Scroll-reveal — only for non-critical elements */
-.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-.fade-in.visible { opacity: 1; transform: none; }
+/* Scroll-reveal removed — all sections always visible */
 
 /* ══════════════════════════════════════════
    METRICS BAND

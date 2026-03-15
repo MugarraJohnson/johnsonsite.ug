@@ -26,24 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  /* 3. Scroll-reveal for non-project elements only */
-  var fadeEls = document.querySelectorAll('.fade-in');
-  if (fadeEls.length && 'IntersectionObserver' in window) {
-    var fadeObs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var siblings = Array.from(entry.target.parentElement.querySelectorAll('.fade-in'));
-        var idx = siblings.indexOf(entry.target);
-        entry.target.style.transitionDelay = (idx * 0.06) + 's';
-        entry.target.classList.add('visible');
-        fadeObs.unobserve(entry.target);
-      });
-    }, { threshold: 0.08 });
-    fadeEls.forEach(function (el) { fadeObs.observe(el); });
-  } else {
-    /* Fallback: show everything if no IntersectionObserver */
-    fadeEls.forEach(function (el) { el.classList.add('visible'); });
-  }
+  /* Scroll-reveal removed — sections are always visible */
 
 
   /* 4. Skill bars animate in */
@@ -137,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
        4. Replace  YOUR_FORM_ID  below with that ID.
      ─────────────────────────────────────────────────────────────
   */
-  var FORMSPREE_ID = 'xpqyjjbq';   // <-- paste your ID here
+  var FORMSPREE_ID = 'xpqyjjbq';
 
   var form    = document.getElementById('contact-form');
   var sendBtn = document.getElementById('send-btn');
