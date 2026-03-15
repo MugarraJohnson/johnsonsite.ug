@@ -90,37 +90,40 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  /* 6. Project filter */
+  /* 6. Project filter — simple class toggle, no opacity tricks */
   var filterRow = document.getElementById('filter-row');
   if (filterRow) {
     filterRow.addEventListener('click', function (e) {
-      if (!e.target.classList.contains('filt')) return;
-      document.querySelectorAll('.filt').forEach(function (b) { b.classList.remove('active'); });
-      e.target.classList.add('active');
-      var f = e.target.getAttribute('data-f');
+      var btn = e.target.closest('.filt');
+      if (!btn) return;
+
+      /* Update active button */
+      document.querySelectorAll('.filt').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      btn.classList.add('active');
+
+      var f = btn.getAttribute('data-f');
+
       document.querySelectorAll('.proj-card').forEach(function (card) {
         var cats = (card.getAttribute('data-cat') || '').split(' ');
-        if (f === 'all' || cats.indexOf(f) !== -1) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
-        }
+        var match = (f === 'all' || cats.indexOf(f) !== -1);
+        card.style.display = match ? 'flex' : 'none';
       });
     });
   }
 
 
-  /* 7. Contact form — sends via Formspree
+  /* 7. Contact form
      ─────────────────────────────────────────────────────────────
-     SETUP (one-time, free):
-       1. Go to https://formspree.io and create a free account.
-       2. Click "New Form", name it, enter johnsonmugarra@yahoo.com
-          as the email that receives submissions.
-       3. Copy your Form ID  (looks like:  xpwzabcd )
-       4. Replace  YOUR_FORM_ID  below with that ID.
+     Works in TWO ways:
+       A) When hosted online → submits via Formspree (silent, no page reload)
+       B) When opened locally as a file → opens your email client pre-filled
+     Either way the visitor's message reaches johnsonmugarra@yahoo.com
      ─────────────────────────────────────────────────────────────
   */
-  var FORMSPREE_ID = 'xpqyjjbq';
+  var FORMSPREE_ID  = 'xpqyjjbq';
+  var CONTACT_EMAIL = 'johnsonmugarra@yahoo.com';
 
   var form    = document.getElementById('contact-form');
   var sendBtn = document.getElementById('send-btn');
@@ -130,14 +133,21 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      if (FORMSPREE_ID === 'YOUR_FORM_ID') {
-        showMsg('error', '&#x26A0; Please set up Formspree first — see the instructions in script.js');
+      var name    = (form.querySelector('[name="name"]')    || {}).value || '';
+      var email   = (form.querySelector('[name="email"]')   || {}).value || '';
+      var subject = (form.querySelector('[name="subject"]') || {}).value || 'Portfolio enquiry';
+      var message = (form.querySelector('[name="message"]') || {}).value || '';
+
+      /* Validate */
+      if (!name.trim() || !email.trim() || !message.trim()) {
+        showMsg('error', '&#x26A0; Please fill in your name, email and message.');
         return;
       }
 
-      /* Disable button while sending */
-      if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
+      /* Disable button */
+      if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending\u2026'; }
 
+      /* Try Formspree first */
       var data = new FormData(form);
 
       fetch('https://formspree.io/f/' + FORMSPREE_ID, {
@@ -147,17 +157,16 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(function (res) {
         if (res.ok) {
-          showMsg('success', '&#x2713; Message sent! I\'ll get back to you soon.');
+          showMsg('success', '&#x2713; Message sent! I\'ll reply to ' + email + ' soon.');
           form.reset();
         } else {
-          res.json().then(function (json) {
-            var err = (json.errors || []).map(function (e) { return e.message; }).join(', ');
-            showMsg('error', '&#x26A0; Could not send: ' + (err || 'unknown error'));
-          });
+          /* Server responded but with error — try mailto fallback */
+          openMailto(name, email, subject, message);
         }
       })
       .catch(function () {
-        showMsg('error', '&#x26A0; Network error — please email me directly at johnsonmugarra@yahoo.com');
+        /* fetch blocked (local file, no internet, etc.) — use mailto */
+        openMailto(name, email, subject, message);
       })
       .finally(function () {
         if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = 'Send message \u2192'; }
@@ -165,11 +174,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  function openMailto(name, email, subject, message) {
+    /* Opens the visitor's email client pre-filled — works 100% locally */
+    var body = 'From: ' + name + ' <' + email + '>\n\n' + message;
+    var mailto = 'mailto:' + CONTACT_EMAIL
+               + '?subject=' + encodeURIComponent(subject)
+               + '&body='    + encodeURIComponent(body);
+    window.location.href = mailto;
+    showMsg('success', '&#x2713; Your email client has opened with the message pre-filled. Just hit Send!');
+    form.reset();
+  }
+
   function showMsg(type, html) {
     if (!fMsg) return;
     fMsg.innerHTML = html;
-    fMsg.className = 'f-msg show ' + type;
-    setTimeout(function () { fMsg.classList.remove('show'); }, 7000);
+    fMsg.className = 'f-msg show ' + (type || '');
+    setTimeout(function () { fMsg.classList.remove('show'); }, 8000);
   }
 
 }); /* end DOMContentLoaded */
