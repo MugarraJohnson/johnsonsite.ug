@@ -1,986 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Johnson Mugarra — Data Scientist</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-<style>
-/* ─── RESET & BASE ─────────────────────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{
-  background:#060C18;
-  color:#E8EDF5;
-  font-family:'DM Sans',sans-serif;
-  font-weight:300;
-  line-height:1.65;
-  overflow-x:hidden;
-}
-
-/* ─── VARIABLES ────────────────────────────────────────────────── */
-:root{
-  --cyan:#00C8FF;
-  --cyan-dim:rgba(0,200,255,.1);
-  --cyan-glow:rgba(0,200,255,.3);
-  --amber:#FFB830;
-  --navy:#060C18;
-  --navy2:#0D1525;
-  --navy3:#111D33;
-  --card:#0F1B2E;
-  --border:rgba(255,255,255,.07);
-  --text:#E8EDF5;
-  --muted:#7A8BA4;
-  --syne:'Syne',sans-serif;
-}
-
-/* ─── SCROLLBAR ─────────────────────────────────────────────────── */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--navy)}
-::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
-
-/* ─── GRID BG ───────────────────────────────────────────────────── */
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    linear-gradient(rgba(0,200,255,.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,200,255,.022) 1px, transparent 1px);
-  background-size:60px 60px;
-}
-
-/* ─── NAVIGATION ────────────────────────────────────────────────── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:1.2rem 5%;
-  background:rgba(6,12,24,.85);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{
-  font-family:var(--syne);font-weight:800;font-size:1.2rem;
-  color:var(--cyan);letter-spacing:-.02em;text-decoration:none;
-}
-.nav-logo span{color:var(--muted)}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{
-  text-decoration:none;color:var(--muted);font-size:.85rem;
-  font-weight:400;letter-spacing:.05em;text-transform:uppercase;
-  transition:color .2s;position:relative;
-}
-.nav-links a::after{
-  content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
-  background:var(--cyan);transition:width .3s;
-}
-.nav-links a:hover{color:var(--text)}
-.nav-links a:hover::after{width:100%}
-.nav-cta{
-  background:transparent;border:1px solid var(--cyan);color:var(--cyan);
-  padding:.42rem 1.2rem;border-radius:4px;font-size:.82rem;cursor:pointer;
-  font-family:'DM Sans',sans-serif;text-decoration:none;transition:all .2s;
-}
-.nav-cta:hover{background:var(--cyan);color:var(--navy);font-weight:600}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-.hamburger span{width:22px;height:1.5px;background:var(--text);display:block;transition:all .3s}
-.mobile-menu{
-  display:none;position:fixed;inset:0;
-  background:rgba(6,12,24,.97);z-index:99;
-  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
-}
-.mobile-menu.open{display:flex}
-.mobile-menu a{
-  font-family:var(--syne);font-size:2.2rem;font-weight:800;
-  color:var(--text);text-decoration:none;transition:color .2s;
-}
-.mobile-menu a:hover{color:var(--cyan)}
-.mob-close{
-  position:absolute;top:1.5rem;right:5%;font-size:1.5rem;
-  background:none;border:none;color:var(--muted);cursor:pointer;
-}
-
-/* ─── HERO ──────────────────────────────────────────────────────── */
-#hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:8rem 5% 5rem;position:relative;z-index:1;
-}
-.hero-inner{
-  display:grid;grid-template-columns:1fr 320px;
-  gap:5rem;align-items:center;max-width:1200px;width:100%;margin:0 auto;
-}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:.5rem;
-  border:1px solid rgba(0,200,255,.3);background:var(--cyan-dim);
-  padding:.3rem .9rem;border-radius:20px;font-size:.75rem;
-  color:var(--cyan);margin-bottom:1.8rem;letter-spacing:.06em;
-  text-transform:uppercase;font-weight:500;
-}
-.hero-badge::before{
-  content:'';width:7px;height:7px;border-radius:50%;
-  background:var(--cyan);animation:blink 2s infinite;
-}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-h1.hero-name{
-  font-family:var(--syne);
-  font-size:clamp(3rem,6vw,5.5rem);
-  font-weight:800;line-height:1;letter-spacing:-.04em;margin-bottom:.5rem;
-}
-h1.hero-name em{
-  font-style:normal;
-  background:linear-gradient(120deg,var(--cyan) 0%,#90F4FF 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-role{
-  font-family:var(--syne);font-size:clamp(.95rem,1.8vw,1.2rem);
-  color:var(--muted);font-weight:500;margin-bottom:1.6rem;letter-spacing:.02em;
-}
-.hero-desc{
-  max-width:580px;color:#9EB2C8;font-size:.98rem;
-  line-height:1.8;margin-bottom:2.5rem;
-}
-.hero-desc strong{color:var(--text);font-weight:500}
-.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
-.btn-primary{
-  background:var(--cyan);color:var(--navy);padding:.72rem 1.8rem;
-  border-radius:5px;font-weight:600;text-decoration:none;font-size:.92rem;
-  transition:all .25s;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;
-  display:inline-flex;align-items:center;gap:.4rem;
-}
-.btn-primary:hover{background:#2DD5FF;transform:translateY(-2px);box-shadow:0 8px 28px var(--cyan-glow)}
-.btn-ghost{
-  border:1px solid var(--border);color:var(--muted);padding:.72rem 1.8rem;
-  border-radius:5px;font-weight:400;text-decoration:none;font-size:.92rem;
-  transition:all .25s;background:transparent;display:inline-flex;align-items:center;gap:.4rem;
-}
-.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan)}
-
-/* ─── PROFILE CARD ──────────────────────────────────────────────── */
-.profile-card{
-  display:flex;flex-direction:column;align-items:center;gap:1rem;
-  background:var(--card);border:1px solid var(--border);border-radius:18px;
-  padding:2rem 1.6rem;position:relative;overflow:hidden;
-}
-.profile-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--amber),var(--cyan),transparent);
-}
-/* spinning ring around photo */
-.pic-wrap{position:relative;width:140px;height:140px}
-.pic-ring{
-  position:absolute;inset:-3px;border-radius:50%;
-  background:conic-gradient(var(--cyan),var(--amber),var(--cyan));
-  animation:rot 5s linear infinite;
-}
-@keyframes rot{to{transform:rotate(360deg)}}
-.pic-inner{
-  position:absolute;inset:3px;border-radius:50%;
-  background:var(--navy2);overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-/*
-  ════════════════════════════════════════
-  TO ADD YOUR PHOTO:
-  Remove the <div class="pic-ph"> block below and add:
-  <img src="photo.jpg" alt="Johnson Mugarra" style="width:100%;height:100%;object-fit:cover">
-  Make sure photo.jpg is in the same folder as index.html
-  ════════════════════════════════════════
-*/
-.pic-ph{
-  width:100%;height:100%;
-  background:linear-gradient(135deg,#0D2040,#0A3060);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;
-}
-.pic-ph svg{opacity:.35}
-.pic-ph small{font-size:.6rem;color:var(--muted);text-align:center;letter-spacing:.06em;text-transform:uppercase;line-height:1.4}
-
-.p-name{font-family:var(--syne);font-weight:700;font-size:1rem;text-align:center;color:var(--text)}
-.p-role{font-size:.75rem;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;font-weight:500}
-.p-loc{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.3rem}
-.p-chips{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;padding-top:.2rem}
-.chip{
-  background:var(--cyan-dim);border:1px solid rgba(0,200,255,.18);
-  color:var(--cyan);font-size:.68rem;padding:.18rem .55rem;
-  border-radius:20px;letter-spacing:.03em;font-weight:500;
-}
-
-/* ─── SECTION BASE ──────────────────────────────────────────────── */
-section{padding:6rem 5%;position:relative;z-index:1}
-.container{max-width:1200px;margin:0 auto}
-.s-label{
-  display:inline-flex;align-items:center;gap:.55rem;
-  font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;
-  color:var(--cyan);font-weight:600;margin-bottom:.9rem;
-}
-.s-label::before{content:'';width:22px;height:1px;background:var(--cyan)}
-.s-title{
-  font-family:var(--syne);
-  font-size:clamp(1.9rem,3.5vw,2.8rem);
-  font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem;
-}
-.s-sub{color:var(--muted);font-size:.95rem;max-width:500px;line-height:1.7;margin-bottom:3rem}
-
-/* ─── METRICS BAND ──────────────────────────────────────────────── */
-#metrics{
-  padding:2.5rem 5%;background:var(--navy2);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  position:relative;z-index:1;
-}
-.metrics-grid{
-  max-width:1200px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:var(--border);border:1px solid var(--border);
-  border-radius:12px;overflow:hidden;gap:1px;
-}
-.metric{background:var(--card);padding:2rem;text-align:center;transition:background .2s}
-.metric:hover{background:#132038}
-.metric-val{
-  font-family:var(--syne);font-size:2.4rem;font-weight:800;
-  color:var(--cyan);line-height:1;margin-bottom:.35rem;
-}
-.metric-val sup{font-size:1rem;color:var(--amber);vertical-align:super}
-.metric-lbl{font-size:.8rem;color:var(--muted);line-height:1.5}
-
-/* ─── ABOUT ─────────────────────────────────────────────────────── */
-.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:start}
-.about-text p{color:#9EB2C8;line-height:1.85;margin-bottom:1.3rem;font-size:.97rem}
-.about-text p strong{color:var(--text);font-weight:500}
-/* timeline */
-.timeline{display:flex;flex-direction:column}
-.t-item{
-  display:grid;grid-template-columns:72px 1fr;
-  gap:1rem;padding-bottom:1.8rem;position:relative;
-}
-.t-item::before{
-  content:'';position:absolute;left:35px;top:24px;bottom:0;
-  width:1px;background:var(--border);
-}
-.t-item:last-child::before{display:none}
-.t-date{
-  font-size:.7rem;color:var(--muted);text-align:right;
-  padding-top:.2rem;line-height:1.4;
-}
-.t-dot{
-  position:absolute;left:30px;top:5px;
-  width:10px;height:10px;border-radius:50%;background:var(--cyan);
-  box-shadow:0 0 0 3px var(--navy2),0 0 0 4px rgba(0,200,255,.25);
-}
-.t-role{font-family:var(--syne);font-weight:700;font-size:.9rem;margin-bottom:.15rem}
-.t-org{font-size:.8rem;color:var(--cyan);margin-bottom:.25rem;font-weight:500}
-.t-desc{font-size:.82rem;color:var(--muted);line-height:1.6}
-
-/* ─── PROJECTS ──────────────────────────────────────────────────── */
-#projects{background:var(--navy2)}
-.filter-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2.5rem}
-.filt{
-  background:transparent;border:1px solid var(--border);color:var(--muted);
-  padding:.35rem 1rem;border-radius:20px;font-size:.8rem;cursor:pointer;
-  transition:all .2s;font-family:'DM Sans',sans-serif;
-}
-.filt.active,.filt:hover{
-  background:var(--cyan-dim);border-color:var(--cyan);color:var(--cyan);
-}
-.proj-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;
-}
-.proj-card{
-  background:var(--card);border:1px solid var(--border);border-radius:14px;
-  padding:1.6rem;display:flex;flex-direction:column;gap:.9rem;
-  transition:all .3s;position:relative;overflow:hidden;
-}
-.proj-card:hover{
-  border-color:rgba(0,200,255,.3);transform:translateY(-4px);
-  box-shadow:0 14px 36px rgba(0,0,0,.5);
-}
-.p-icon{
-  font-size:1.7rem;width:46px;height:46px;
-  background:var(--navy3);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-}
-.proj-card h3{
-  font-family:var(--syne);font-weight:700;font-size:.95rem;
-  line-height:1.3;
-}
-.proj-card p{font-size:.85rem;color:var(--muted);line-height:1.65;flex:1}
-.proj-card p strong{color:#C0D0E0;font-weight:500}
-.p-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto}
-.ptag{
-  background:var(--navy3);color:var(--muted);
-  font-size:.68rem;padding:.18rem .5rem;border-radius:4px;
-  border:1px solid var(--border);
-}
-.proj-card.hidden{display:none}
-
-/* ─── SKILLS ────────────────────────────────────────────────────── */
-.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:4.5rem;align-items:start}
-.sg-title{
-  font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;
-  color:var(--amber);margin-bottom:.9rem;font-weight:600;margin-top:1.8rem;
-}
-.sg-title:first-child{margin-top:0}
-.sk-row{margin-bottom:.9rem}
-.sk-meta{display:flex;justify-content:space-between;margin-bottom:.35rem;font-size:.83rem}
-.sk-name{color:var(--text)}
-.sk-pct{color:var(--muted);font-size:.78rem}
-.sk-track{background:var(--navy3);border-radius:2px;height:3px;overflow:hidden}
-.sk-fill{
-  height:100%;border-radius:2px;width:0;
-  background:linear-gradient(90deg,var(--cyan),#A0F8FF);
-  transition:width 1.3s cubic-bezier(.4,0,.2,1);
-}
-.bdg-group{margin-bottom:1.6rem}
-.bdg-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem}
-.bdg-wrap{display:flex;flex-wrap:wrap;gap:.4rem}
-.bdg{
-  background:var(--navy3);border:1px solid var(--border);
-  color:#9EB8C8;padding:.25rem .75rem;border-radius:6px;font-size:.78rem;
-  transition:all .2s;
-}
-.bdg:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim)}
-
-/* ─── CERTIFICATIONS ────────────────────────────────────────────── */
-#certs{background:var(--navy2)}
-.certs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
-.cert-card{
-  background:var(--card);border:1px solid var(--border);border-radius:10px;
-  padding:1.3rem 1.5rem;display:flex;align-items:center;gap:.9rem;transition:all .25s;
-}
-.cert-card:hover{border-color:rgba(0,200,255,.25);transform:translateY(-2px)}
-.c-icon{
-  width:40px;height:40px;min-width:40px;border-radius:9px;
-  background:var(--cyan-dim);border:1px solid rgba(0,200,255,.18);
-  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
-}
-.c-name{font-weight:500;font-size:.88rem;line-height:1.3;color:var(--text)}
-.c-issuer{font-size:.75rem;color:var(--muted);margin-top:.12rem}
-
-/* ─── CONTACT ───────────────────────────────────────────────────── */
-.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
-.contact-intro{color:#9EB2C8;line-height:1.8;margin-bottom:1.8rem;font-size:.97rem}
-.c-items{display:flex;flex-direction:column;gap:.9rem}
-.c-item{
-  display:flex;align-items:center;gap:.9rem;
-  background:var(--card);border:1px solid var(--border);border-radius:9px;
-  padding:.9rem 1.2rem;text-decoration:none;color:var(--text);transition:all .25s;
-}
-.c-item:hover{border-color:var(--cyan);transform:translateX(4px)}
-.c-ico{
-  width:36px;height:36px;min-width:36px;border-radius:7px;
-  background:var(--navy3);display:flex;align-items:center;justify-content:center;
-  font-size:.95rem;color:var(--cyan);font-family:var(--syne);font-weight:700;
-}
-.c-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.05rem}
-.c-val{font-size:.88rem;color:var(--text)}
-/* form */
-.contact-form{display:flex;flex-direction:column;gap:1rem}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-.fg{display:flex;flex-direction:column;gap:.35rem}
-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
-input,textarea{
-  background:var(--card);border:1px solid var(--border);color:var(--text);
-  padding:.7rem .95rem;border-radius:7px;font-family:'DM Sans',sans-serif;
-  font-size:.9rem;outline:none;transition:border .2s;resize:none;font-weight:300;
-}
-input:focus,textarea:focus{border-color:var(--cyan)}
-input::placeholder,textarea::placeholder{color:var(--muted);opacity:.55}
-.btn-send{
-  background:var(--cyan);color:var(--navy);border:none;padding:.8rem;
-  border-radius:7px;font-size:.92rem;font-weight:600;cursor:pointer;
-  font-family:'DM Sans',sans-serif;transition:all .25s;
-}
-.btn-send:hover{background:#2DD5FF;box-shadow:0 6px 24px var(--cyan-glow)}
-.f-msg{
-  font-size:.83rem;color:var(--cyan);text-align:center;
-  padding:.7rem;background:var(--cyan-dim);border-radius:7px;
-  border:1px solid rgba(0,200,255,.2);display:none;
-}
-.f-msg.show{display:block}
-
-/* ─── FOOTER ────────────────────────────────────────────────────── */
-footer{
-  background:var(--navy2);border-top:1px solid var(--border);
-  padding:2rem 5%;position:relative;z-index:1;
-}
-.foot-inner{
-  max-width:1200px;margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
-}
-.foot-logo{font-family:var(--syne);font-weight:800;color:var(--cyan);font-size:1.05rem}
-.foot-copy{font-size:.8rem;color:var(--muted)}
-.foot-links{display:flex;gap:1.5rem}
-.foot-links a{font-size:.8rem;color:var(--muted);text-decoration:none;transition:color .2s}
-.foot-links a:hover{color:var(--cyan)}
-
-/* ─── SCROLL PROGRESS ───────────────────────────────────────────── */
-#sprogress{
-  position:fixed;top:0;left:0;height:2px;width:0;
-  background:linear-gradient(90deg,var(--cyan),var(--amber));
-  z-index:200;
-}
-
-/* ─── REVEAL ────────────────────────────────────────────────────── */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
-.reveal.vis{opacity:1;transform:none}
-
-/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
-@media(max-width:920px){
-  .hero-inner{grid-template-columns:1fr;gap:2.5rem}
-  .profile-card{flex-direction:row;flex-wrap:wrap;justify-content:center;max-width:480px;margin:0 auto}
-  .about-grid,.skills-layout,.contact-layout{grid-template-columns:1fr}
-  .proj-grid{grid-template-columns:repeat(2,1fr)}
-  .metrics-grid{grid-template-columns:repeat(2,1fr)}
-  .certs-grid{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-  .nav-links,.nav-cta{display:none}
-  .hamburger{display:flex}
-  .proj-grid{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .metrics-grid{grid-template-columns:1fr 1fr}
-  h1.hero-name{font-size:2.9rem}
-  section{padding:4rem 5%}
-}
-</style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Johnson Mugarra — Data Scientist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<div id="sprogress"></div>
+  <!-- Scroll progress bar -->
+  <div id="sprogress"></div>
 
-<!-- ═══ NAV ═══════════════════════════════════════════════════════════ -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">JM<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#certs">Certs</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <a href="#contact" class="nav-cta">Hire me</a>
-  <button class="hamburger" id="ham" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════════ -->
+  <nav>
+    <a href="#" class="nav-logo">JM<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#certs">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Hire me</a>
+    <button class="hamburger" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-<!-- Mobile menu -->
-<div class="mobile-menu" id="mob-menu">
-  <button class="mob-close" id="mob-close">✕</button>
-  <a href="#about">About</a>
-  <a href="#projects">Projects</a>
-  <a href="#skills">Skills</a>
-  <a href="#certs">Certs</a>
-  <a href="#contact">Contact</a>
-</div>
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mob-menu">
+    <button class="mob-close" id="mob-close">✕</button>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certs">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
 
-<!-- ═══ HERO ════════════════════════════════════════════════════════════ -->
-<section id="hero">
-  <div class="hero-inner container">
+  <!-- ═══ HERO ══════════════════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-inner container">
 
-    <div class="hero-left">
-      <div class="hero-badge">Available for opportunities</div>
-      <h1 class="hero-name">Johnson<br><em>Mugarra</em></h1>
-      <p class="hero-role">Data Scientist &nbsp;/&nbsp; Research &amp; MEAL Specialist</p>
-      <p class="hero-desc">
-        Results-driven Data Scientist with <strong>6+ years</strong> deploying ML solutions, predictive models, and automated ETL pipelines in agriculture, climate resilience, and development contexts across East Africa. Turning complex data into evidence-based strategies that move governments and international partners to act.
+      <!-- Left: text -->
+      <div class="hero-left">
+        <div class="hero-badge">Available for opportunities</div>
+
+        <h1 class="hero-name">
+          Johnson
+          <em>Mugarra</em>
+        </h1>
+
+        <p class="hero-role">Data Scientist &nbsp;/&nbsp; Research &amp; MEAL Specialist</p>
+
+        <p class="hero-desc">
+          Results-driven Data Scientist with <strong>6+ years</strong> deploying ML solutions,
+          predictive models, and automated ETL pipelines in agriculture, climate resilience,
+          and development contexts across East Africa. Turning complex data into evidence-based
+          strategies that move governments and international partners to act.
+        </p>
+
+        <div class="hero-btns">
+          <a href="#projects" class="btn-primary">View my work →</a>
+          <a href="#contact"  class="btn-ghost">Get in touch</a>
+        </div>
+      </div>
+
+      <!-- Right: profile card -->
+      <div class="profile-card reveal">
+        <div class="pic-wrap">
+          <div class="pic-ring"></div>
+          <div class="pic-inner">
+            <!--
+              ════════════════════════════════════════
+              TO ADD YOUR PHOTO:
+              1. Save your photo as  photo.jpg  in the same
+                 folder as index.html (next to style.css).
+              2. Delete the <div class="pic-ph">…</div> below.
+              3. Paste this in its place:
+                 <img src="photo.jpg" alt="Johnson Mugarra"
+                      style="width:100%;height:100%;
+                             object-fit:cover;border-radius:50%">
+              ════════════════════════════════════════
+            -->
+            <div class="pic-ph">
+              <svg width="38" height="38" viewBox="0 0 24 24"
+                   fill="none" stroke="#7A8BA4" stroke-width="1.2">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+              <small>Add your<br>photo here</small>
+            </div>
+          </div>
+        </div>
+        <p class="p-name">Johnson Mugarra</p>
+        <p class="p-role">Data Scientist</p>
+        <p class="p-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Kampala, Uganda
+        </p>
+        <div class="p-chips">
+          <span class="chip">Python</span>
+          <span class="chip">ML / AI</span>
+          <span class="chip">Tableau</span>
+          <span class="chip">Power BI</span>
+          <span class="chip">PMP</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ METRICS ══════════════════════════════════════════════════ -->
+  <div id="metrics">
+    <div class="metrics-grid">
+      <div class="metric reveal">
+        <div class="metric-val"><span id="m1">0</span>%</div>
+        <div class="metric-lbl">MAE reduction<br>crop yield forecast</div>
+      </div>
+      <div class="metric reveal">
+        <div class="metric-val"><span id="m2">0</span>%</div>
+        <div class="metric-lbl">Faster evaluation cycles<br>6 weeks → 10 days</div>
+      </div>
+      <div class="metric reveal">
+        <div class="metric-val"><span id="m3">0</span>%<sup>+</sup></div>
+        <div class="metric-lbl">Data reliability<br>USAID SITES</div>
+      </div>
+      <div class="metric reveal">
+        <div class="metric-val"><span id="m4">0</span><sup>+ yrs</sup></div>
+        <div class="metric-lbl">ML &amp; development<br>analytics experience</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ABOUT ═════════════════════════════════════════════════════ -->
+  <section id="about">
+    <div class="container">
+      <div class="s-label">About me</div>
+      <h2 class="s-title">Turning data into development impact</h2>
+
+      <div class="about-grid">
+
+        <!-- About text -->
+        <div class="about-text reveal">
+          <p>
+            I'm a Data Scientist who works at the intersection of <strong>machine learning,
+            impact evaluation, and development policy</strong>. Over six years I've designed
+            and deployed production-grade ML systems, automated ETL pipelines, and interactive
+            dashboards used by government ministries, USAID programmes, and international NGOs
+            across East Africa.
+          </p>
+          <p>
+            At <strong>MAAIF / Makerere University</strong>, I engineered a climate-resilient
+            crop yield forecasting system powered by NASA POWER satellite data — achieving an
+            18% improvement in forecast accuracy and presenting findings directly to
+            H.E. President Museveni. At <strong>USAID SITES (DLH Corp &amp; SSS Inc.)</strong>
+            I automated impact evaluation pipelines that compressed six-week analysis cycles
+            down to under 10 days across 12 concurrent initiatives.
+          </p>
+          <p>
+            I hold an <strong>M.Sc. in Data Science</strong> from MAHE India and am certified
+            in PMP, Power BI, SAS Statistics, and Tableau. Based in Kampala — available for
+            remote and international roles.
+          </p>
+          <a href="#contact" class="btn-primary" style="margin-top:1.6rem;display:inline-flex">
+            Let's connect →
+          </a>
+        </div>
+
+        <!-- Experience timeline -->
+        <div class="reveal">
+          <div class="timeline">
+
+            <div class="t-item">
+              <div class="t-date">2025<br>Now</div>
+              <div style="position:relative;padding-left:1.3rem">
+                <div class="t-dot"></div>
+                <div class="t-role">Research &amp; MEAL Specialist</div>
+                <div class="t-org">CRC — Banadir, Somalia (Remote)</div>
+                <div class="t-desc">Leading quantitative &amp; qualitative analysis for multi-sector humanitarian programs; improved effectiveness 20–30%.</div>
+              </div>
+            </div>
+
+            <div class="t-item">
+              <div class="t-date">2024<br>2025</div>
+              <div style="position:relative;padding-left:1.3rem">
+                <div class="t-dot"></div>
+                <div class="t-role">Data Scientist</div>
+                <div class="t-org">MAAIF – VANEX, Makerere &amp; CRS</div>
+                <div class="t-desc">End-to-end ML forecasting; 18% MAE reduction; findings presented to President Museveni.</div>
+              </div>
+            </div>
+
+            <div class="t-item">
+              <div class="t-date">2023<br>2025</div>
+              <div style="position:relative;padding-left:1.3rem">
+                <div class="t-dot"></div>
+                <div class="t-role">Data Analyst &amp; Research Associate</div>
+                <div class="t-org">USAID-SITES — DLH Corp / SSS Inc.</div>
+                <div class="t-desc">95%+ data reliability; automated pipelines; 80% faster evaluation cycles.</div>
+              </div>
+            </div>
+
+            <div class="t-item">
+              <div class="t-date">2021<br>2023</div>
+              <div style="position:relative;padding-left:1.3rem">
+                <div class="t-dot"></div>
+                <div class="t-role">Data Analyst / Research Associate</div>
+                <div class="t-org">Bronkar (U) Limited</div>
+                <div class="t-desc">M&amp;E frameworks, mixed-methods analysis, and digital data tools across East Africa &amp; Sudan.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROJECTS ══════════════════════════════════════════════════ -->
+  <section id="projects">
+    <div class="container">
+      <div class="s-label">Selected Work</div>
+      <h2 class="s-title">Projects that move the needle</h2>
+      <p class="s-sub">
+        Production systems and research tools delivering measurable outcomes in agriculture,
+        humanitarian response, and development analytics.
       </p>
-      <div class="hero-btns">
-        <a href="#projects" class="btn-primary">View my work →</a>
-        <a href="#contact" class="btn-ghost">Get in touch</a>
-      </div>
-    </div>
 
-    <!-- ── PROFILE CARD ──────────────────────────────────── -->
-    <div class="profile-card reveal">
-      <div class="pic-wrap">
-        <div class="pic-ring"></div>
-        <div class="pic-inner">
-          <!--
-            ════════════════════════════════════════
-            SWAP IN YOUR PHOTO:
-            Delete the <div class="pic-ph"> block and replace with:
-            <img src="photo.jpg" alt="Johnson Mugarra"
-                 style="width:100%;height:100%;object-fit:cover">
-            Put photo.jpg in the same folder as this file.
-            ════════════════════════════════════════
-          -->
-          <div class="pic-ph">
-            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#7A8BA4" stroke-width="1.2">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-            <small>Add your<br>photo here</small>
+      <!-- Filter buttons -->
+      <div class="filter-row" id="filter-row">
+        <button class="filt active" data-f="all">All</button>
+        <button class="filt" data-f="ml">ML / AI</button>
+        <button class="filt" data-f="analytics">Analytics &amp; BI</button>
+        <button class="filt" data-f="engineering">Data Engineering</button>
+        <button class="filt" data-f="nlp">NLP / Automation</button>
+      </div>
+
+      <!-- Project cards -->
+      <div class="proj-grid" id="proj-grid">
+
+        <div class="proj-card reveal" data-cat="ml engineering">
+          <div class="p-icon">🌾</div>
+          <h3>Climate-Resilient Crop Yield Forecasting</h3>
+          <p>Full-stack time-series pipeline integrating NASA POWER API, satellite NDVI, and soil
+             data to forecast vanilla yields for Ugandan smallholders. Achieved <strong>18% MAE
+             reduction</strong> vs baseline with Prophet + hierarchical reconciliation. Dashboard
+             actively used by MAAIF extension officers.</p>
+          <div class="p-tags">
+            <span class="ptag">Python</span><span class="ptag">Prophet</span>
+            <span class="ptag">NASA API</span><span class="ptag">Tableau</span>
+            <span class="ptag">Power BI</span>
           </div>
         </div>
+
+        <div class="proj-card reveal" data-cat="ml engineering analytics">
+          <div class="p-icon">⚙️</div>
+          <h3>Automated Impact Evaluation Pipeline</h3>
+          <p>Python + Airflow pipeline ingesting KoboToolbox/SurveyCTO surveys, applying PSM &amp;
+             DiD causal inference, and auto-generating Tableau reports. Reduced evaluation cycle
+             from <strong>6 weeks to under 10 days</strong> across 12 concurrent initiatives.</p>
+          <div class="p-tags">
+            <span class="ptag">Python</span><span class="ptag">Airflow</span>
+            <span class="ptag">PostgreSQL</span><span class="ptag">Power BI</span>
+          </div>
+        </div>
+
+        <div class="proj-card reveal" data-cat="analytics">
+          <div class="p-icon">🗺️</div>
+          <h3>Geospatial Analytics &amp; Real-Time Mapping</h3>
+          <p>Advanced interactive dashboards combining ArcGIS and Power BI for real-time decision
+             support in East Africa development programs. Enabled <strong>15% gains</strong> in
+             operational efficiency for USAID SITES field teams.</p>
+          <div class="p-tags">
+            <span class="ptag">ArcGIS</span><span class="ptag">Power BI</span>
+            <span class="ptag">SQL</span><span class="ptag">Looker Studio</span>
+          </div>
+        </div>
+
+        <div class="proj-card reveal" data-cat="nlp ml">
+          <div class="p-icon">💬</div>
+          <h3>NLP Sentiment Analysis</h3>
+          <p>Applied NLP techniques to conversational datasets to extract sentiment insights
+             supporting evidence-based decision-making in humanitarian programme monitoring
+             and community feedback analysis.</p>
+          <div class="p-tags">
+            <span class="ptag">Python</span><span class="ptag">Scikit-Learn</span>
+            <span class="ptag">NLTK</span><span class="ptag">NLP</span>
+          </div>
+        </div>
+
+        <div class="proj-card reveal" data-cat="nlp engineering">
+          <div class="p-icon">🤖</div>
+          <h3>Web Scraping &amp; Automation Framework</h3>
+          <p>Python + Selenium scripts for automated data ingestion, metadata embedding, and
+             structured CSV output — demonstrating scalable pipeline engineering at production
+             scale.</p>
+          <div class="p-tags">
+            <span class="ptag">Python</span><span class="ptag">Selenium</span>
+            <span class="ptag">ETL</span><span class="ptag">Automation</span>
+          </div>
+        </div>
+
+        <div class="proj-card reveal" data-cat="analytics ml">
+          <div class="p-icon">📊</div>
+          <h3>M&amp;E Analytics Dashboards — USAID SITES</h3>
+          <p>Stakeholder-focused interactive dashboards enabling real-time programme adjustments.
+             Achieved <strong>95%+ data reliability</strong> for high-stakes impact evaluations
+             using rigorous SQL/Python cleaning pipelines.</p>
+          <div class="p-tags">
+            <span class="ptag">SQL</span><span class="ptag">Python</span>
+            <span class="ptag">Tableau</span><span class="ptag">KoboToolbox</span>
+          </div>
+        </div>
+
       </div>
-      <p class="p-name">Johnson Mugarra</p>
-      <p class="p-role">Data Scientist</p>
-      <p class="p-loc">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
-        Kampala, Uganda
-      </p>
-      <div class="p-chips">
-        <span class="chip">Python</span>
-        <span class="chip">ML / AI</span>
-        <span class="chip">Tableau</span>
-        <span class="chip">Power BI</span>
-        <span class="chip">PMP</span>
-      </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- ═══ SKILLS ════════════════════════════════════════════════════ -->
+  <section id="skills">
+    <div class="container">
+      <div class="s-label">Technical Skills</div>
+      <h2 class="s-title">My toolkit</h2>
 
-<!-- ═══ METRICS ══════════════════════════════════════════════════════════ -->
-<div id="metrics">
-  <div class="metrics-grid">
-    <div class="metric reveal">
-      <div class="metric-val"><span id="m1">0</span>%</div>
-      <div class="metric-lbl">MAE reduction<br>crop yield forecast</div>
-    </div>
-    <div class="metric reveal">
-      <div class="metric-val"><span id="m2">0</span>%</div>
-      <div class="metric-lbl">Faster evaluation cycles<br>6 weeks → 10 days</div>
-    </div>
-    <div class="metric reveal">
-      <div class="metric-val"><span id="m3">0</span>%<sup>+</sup></div>
-      <div class="metric-lbl">Data reliability<br>USAID SITES</div>
-    </div>
-    <div class="metric reveal">
-      <div class="metric-val"><span id="m4">0</span><sup>+ yrs</sup></div>
-      <div class="metric-lbl">ML &amp; development<br>analytics experience</div>
-    </div>
-  </div>
-</div>
+      <div class="skills-layout">
 
-<!-- ═══ ABOUT ═════════════════════════════════════════════════════════════ -->
-<section id="about">
-  <div class="container">
-    <div class="s-label">About me</div>
-    <h2 class="s-title">Turning data into<br>development impact</h2>
-    <div class="about-grid">
+        <!-- Skill bars -->
+        <div class="reveal" id="skill-bars">
+          <div class="sg-title">Programming &amp; ML</div>
 
-      <div class="about-text reveal">
-        <p>I'm a Data Scientist who works at the intersection of <strong>machine learning, impact evaluation, and development policy</strong>. Over six years I've designed and deployed production-grade ML systems, automated ETL pipelines, and interactive dashboards used by government ministries, USAID programs, and international NGOs across East Africa.</p>
-        <p>At <strong>MAAIF / Makerere University</strong>, I engineered a climate-resilient crop yield forecasting system powered by NASA POWER satellite data — achieving an 18% improvement in forecast accuracy and presenting findings directly to H.E. President Museveni. At <strong>USAID SITES (DLH Corp &amp; SSS Inc.)</strong> I automated impact evaluation pipelines that compressed six-week analysis cycles down to under 10 days across 12 concurrent initiatives.</p>
-        <p>I hold an <strong>M.Sc. in Data Science</strong> from MAHE India and am certified in PMP, Power BI, SAS Statistics, and Tableau. Based in Kampala — available for remote and international roles.</p>
-        <a href="#contact" class="btn-primary" style="margin-top:1.6rem;display:inline-flex">Let's connect →</a>
-      </div>
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">Python (ML / Data Science)</span>
+              <span class="sk-pct">95%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="95"></div></div>
+          </div>
 
-      <div class="reveal">
-        <div class="timeline">
-          <div class="t-item">
-            <div class="t-date">2025<br>Now</div>
-            <div style="position:relative;padding-left:1.3rem">
-              <div class="t-dot"></div>
-              <div class="t-role">Research &amp; MEAL Specialist</div>
-              <div class="t-org">CRC — Banadir, Somalia (Remote)</div>
-              <div class="t-desc">Leading quantitative &amp; qualitative analysis for multi-sector humanitarian programs; improved effectiveness 20–30%.</div>
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">SQL &amp; Databases</span>
+              <span class="sk-pct">90%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="90"></div></div>
+          </div>
+
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">Machine Learning &amp; Statistics</span>
+              <span class="sk-pct">90%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="90"></div></div>
+          </div>
+
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">R Programming</span>
+              <span class="sk-pct">88%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="88"></div></div>
+          </div>
+
+          <div class="sg-title">Analytics &amp; Engineering</div>
+
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">Tableau / Power BI</span>
+              <span class="sk-pct">92%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="92"></div></div>
+          </div>
+
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">ETL Pipelines / Airflow</span>
+              <span class="sk-pct">85%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="85"></div></div>
+          </div>
+
+          <div class="sk-row">
+            <div class="sk-meta">
+              <span class="sk-name">NLP &amp; Time-Series Forecasting</span>
+              <span class="sk-pct">82%</span>
+            </div>
+            <div class="sk-track"><div class="sk-fill" data-w="82"></div></div>
+          </div>
+        </div>
+
+        <!-- Technology badges -->
+        <div class="reveal">
+          <div class="bdg-group">
+            <div class="bdg-label">Languages</div>
+            <div class="bdg-wrap">
+              <span class="bdg">Python</span><span class="bdg">R</span>
+              <span class="bdg">SQL</span><span class="bdg">Bash / Batch</span>
             </div>
           </div>
-          <div class="t-item">
-            <div class="t-date">2024<br>2025</div>
-            <div style="position:relative;padding-left:1.3rem">
-              <div class="t-dot"></div>
-              <div class="t-role">Data Scientist</div>
-              <div class="t-org">MAAIF – VANEX, Makerere &amp; CRS</div>
-              <div class="t-desc">End-to-end ML forecasting; 18% MAE reduction; findings presented to President Museveni.</div>
+          <div class="bdg-group">
+            <div class="bdg-label">ML / AI Frameworks</div>
+            <div class="bdg-wrap">
+              <span class="bdg">TensorFlow</span><span class="bdg">PyTorch</span>
+              <span class="bdg">Scikit-Learn</span><span class="bdg">Statsmodels</span>
+              <span class="bdg">Prophet</span>
             </div>
           </div>
-          <div class="t-item">
-            <div class="t-date">2023<br>2025</div>
-            <div style="position:relative;padding-left:1.3rem">
-              <div class="t-dot"></div>
-              <div class="t-role">Data Analyst &amp; Research Associate</div>
-              <div class="t-org">USAID-SITES — DLH Corp / SSS Inc.</div>
-              <div class="t-desc">95%+ data reliability; automated pipelines; 80% faster evaluation cycles.</div>
+          <div class="bdg-group">
+            <div class="bdg-label">Visualisation &amp; BI</div>
+            <div class="bdg-wrap">
+              <span class="bdg">Tableau</span><span class="bdg">Power BI</span>
+              <span class="bdg">Looker Studio</span><span class="bdg">ArcGIS</span>
             </div>
           </div>
-          <div class="t-item">
-            <div class="t-date">2021<br>2023</div>
-            <div style="position:relative;padding-left:1.3rem">
-              <div class="t-dot"></div>
-              <div class="t-role">Data Analyst / Research Associate</div>
-              <div class="t-org">Bronkar (U) Limited</div>
-              <div class="t-desc">M&amp;E frameworks, mixed-methods analysis, and digital data tools across East Africa &amp; Sudan.</div>
+          <div class="bdg-group">
+            <div class="bdg-label">Data Engineering</div>
+            <div class="bdg-wrap">
+              <span class="bdg">Airflow</span><span class="bdg">Spark</span>
+              <span class="bdg">Hadoop</span><span class="bdg">Docker</span>
+              <span class="bdg">PostgreSQL</span><span class="bdg">Git</span>
+              <span class="bdg">KoboToolbox</span><span class="bdg">Selenium</span>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ PROJECTS ══════════════════════════════════════════════════════════ -->
-<section id="projects">
-  <div class="container">
-    <div class="s-label">Selected Work</div>
-    <h2 class="s-title">Projects that<br>move the needle</h2>
-    <p class="s-sub">Production systems and research tools delivering measurable outcomes in agriculture, humanitarian response, and development analytics.</p>
+  <!-- ═══ CERTIFICATIONS ════════════════════════════════════════════ -->
+  <section id="certs">
+    <div class="container">
+      <div class="s-label">Credentials</div>
+      <h2 class="s-title">Certifications &amp; Education</h2>
+      <p class="s-sub">Industry-recognised qualifications backing 6+ years of hands-on practice.</p>
 
-    <div class="filter-row" id="filter-row">
-      <button class="filt active" data-f="all">All</button>
-      <button class="filt" data-f="ml">ML / AI</button>
-      <button class="filt" data-f="analytics">Analytics &amp; BI</button>
-      <button class="filt" data-f="engineering">Data Engineering</button>
-      <button class="filt" data-f="nlp">NLP / Automation</button>
-    </div>
-
-    <div class="proj-grid" id="proj-grid">
-
-      <div class="proj-card reveal" data-cat="ml engineering">
-        <div class="p-icon">🌾</div>
-        <h3>Climate-Resilient Crop Yield Forecasting</h3>
-        <p>Full-stack time-series pipeline integrating NASA POWER API, satellite NDVI, and soil data to forecast vanilla yields for Ugandan smallholders. Achieved <strong>18% MAE reduction</strong> vs baseline with Prophet + hierarchical reconciliation. Dashboard actively used by MAAIF extension officers.</p>
-        <div class="p-tags">
-          <span class="ptag">Python</span><span class="ptag">Prophet</span><span class="ptag">NASA API</span><span class="ptag">Tableau</span><span class="ptag">Power BI</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="ml engineering analytics">
-        <div class="p-icon">⚙️</div>
-        <h3>Automated Impact Evaluation Pipeline</h3>
-        <p>Python + Airflow pipeline ingesting KoboToolbox/SurveyCTO surveys, applying PSM &amp; DiD causal inference, and auto-generating Tableau reports. Reduced evaluation cycle from <strong>6 weeks to under 10 days</strong> across 12 concurrent initiatives.</p>
-        <div class="p-tags">
-          <span class="ptag">Python</span><span class="ptag">Airflow</span><span class="ptag">PostgreSQL</span><span class="ptag">Power BI</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="analytics">
-        <div class="p-icon">🗺️</div>
-        <h3>Geospatial Analytics &amp; Real-Time Mapping</h3>
-        <p>Advanced interactive dashboards combining ArcGIS and Power BI for real-time decision support in East Africa development programs. Enabled <strong>15% gains</strong> in operational efficiency for USAID SITES field teams.</p>
-        <div class="p-tags">
-          <span class="ptag">ArcGIS</span><span class="ptag">Power BI</span><span class="ptag">SQL</span><span class="ptag">Looker Studio</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="nlp ml">
-        <div class="p-icon">💬</div>
-        <h3>NLP Sentiment Analysis</h3>
-        <p>Applied NLP techniques to conversational datasets to extract sentiment insights supporting evidence-based decision-making in humanitarian programme monitoring and community feedback analysis.</p>
-        <div class="p-tags">
-          <span class="ptag">Python</span><span class="ptag">Scikit-Learn</span><span class="ptag">NLTK</span><span class="ptag">NLP</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="nlp engineering">
-        <div class="p-icon">🤖</div>
-        <h3>Web Scraping &amp; Automation Framework</h3>
-        <p>Python + Selenium scripts for automated data ingestion, metadata embedding, and structured CSV output generation — demonstrating scalable data pipeline engineering at production scale.</p>
-        <div class="p-tags">
-          <span class="ptag">Python</span><span class="ptag">Selenium</span><span class="ptag">ETL</span><span class="ptag">Automation</span>
-        </div>
-      </div>
-
-      <div class="proj-card reveal" data-cat="analytics ml">
-        <div class="p-icon">📊</div>
-        <h3>M&amp;E Analytics Dashboards — USAID SITES</h3>
-        <p>Stakeholder-focused interactive dashboards enabling real-time programme adjustments. Achieved <strong>95%+ data reliability</strong> for high-stakes impact evaluations using rigorous SQL/Python cleaning pipelines.</p>
-        <div class="p-tags">
-          <span class="ptag">SQL</span><span class="ptag">Python</span><span class="ptag">Tableau</span><span class="ptag">KoboToolbox</span>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══ SKILLS ════════════════════════════════════════════════════════════ -->
-<section id="skills">
-  <div class="container">
-    <div class="s-label">Technical Skills</div>
-    <h2 class="s-title">My toolkit</h2>
-    <div class="skills-layout">
-
-      <div class="reveal" id="skill-bars">
-        <div class="sg-title">Programming &amp; ML</div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">Python (ML / Data Science)</span><span class="sk-pct">95%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="95"></div></div>
-        </div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">SQL &amp; Databases</span><span class="sk-pct">90%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="90"></div></div>
-        </div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">Machine Learning &amp; Statistics</span><span class="sk-pct">90%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="90"></div></div>
-        </div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">R Programming</span><span class="sk-pct">88%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="88"></div></div>
-        </div>
-        <div class="sg-title">Analytics &amp; Engineering</div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">Tableau / Power BI</span><span class="sk-pct">92%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="92"></div></div>
-        </div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">ETL Pipelines / Airflow</span><span class="sk-pct">85%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="85"></div></div>
-        </div>
-        <div class="sk-row">
-          <div class="sk-meta"><span class="sk-name">NLP &amp; Time-Series Forecasting</span><span class="sk-pct">82%</span></div>
-          <div class="sk-track"><div class="sk-fill" data-w="82"></div></div>
-        </div>
-      </div>
-
-      <div class="reveal">
-        <div class="bdg-group">
-          <div class="bdg-label">Languages</div>
-          <div class="bdg-wrap">
-            <span class="bdg">Python</span><span class="bdg">R</span>
-            <span class="bdg">SQL</span><span class="bdg">Bash / Batch</span>
+      <div class="certs-grid">
+        <div class="cert-card reveal">
+          <div class="c-icon">🏅</div>
+          <div>
+            <div class="c-name">Project Management Professional (PMP)</div>
+            <div class="c-issuer">Project Management Institute</div>
           </div>
         </div>
-        <div class="bdg-group">
-          <div class="bdg-label">ML / AI Frameworks</div>
-          <div class="bdg-wrap">
-            <span class="bdg">TensorFlow</span><span class="bdg">PyTorch</span>
-            <span class="bdg">Scikit-Learn</span><span class="bdg">Statsmodels</span>
-            <span class="bdg">Prophet</span>
+        <div class="cert-card reveal">
+          <div class="c-icon">📊</div>
+          <div>
+            <div class="c-name">Microsoft Certified: Power BI Data Analyst Associate</div>
+            <div class="c-issuer">Microsoft</div>
           </div>
         </div>
-        <div class="bdg-group">
-          <div class="bdg-label">Visualisation &amp; BI</div>
-          <div class="bdg-wrap">
-            <span class="bdg">Tableau</span><span class="bdg">Power BI</span>
-            <span class="bdg">Looker Studio</span><span class="bdg">ArcGIS</span>
+        <div class="cert-card reveal">
+          <div class="c-icon">📈</div>
+          <div>
+            <div class="c-name">SAS Certified Statistical Business Analyst</div>
+            <div class="c-issuer">SAS Institute</div>
           </div>
         </div>
-        <div class="bdg-group">
-          <div class="bdg-label">Data Engineering</div>
-          <div class="bdg-wrap">
-            <span class="bdg">Airflow</span><span class="bdg">Spark</span>
-            <span class="bdg">Hadoop</span><span class="bdg">Docker</span>
-            <span class="bdg">PostgreSQL</span><span class="bdg">Git</span>
-            <span class="bdg">KoboToolbox</span><span class="bdg">Selenium</span>
+        <div class="cert-card reveal">
+          <div class="c-icon">🔵</div>
+          <div>
+            <div class="c-name">Tableau Desktop Specialist</div>
+            <div class="c-issuer">Tableau / Salesforce</div>
+          </div>
+        </div>
+        <div class="cert-card reveal">
+          <div class="c-icon">🎓</div>
+          <div>
+            <div class="c-name">M.Sc. Data Science</div>
+            <div class="c-issuer">Manipal Academy of Higher Education (MAHE), India · 2022–2024</div>
+          </div>
+        </div>
+        <div class="cert-card reveal">
+          <div class="c-icon">🌱</div>
+          <div>
+            <div class="c-name">B.Sc. Agricultural Science</div>
+            <div class="c-issuer">Makerere University, Kampala · 2016–2021</div>
           </div>
         </div>
       </div>
-
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ CERTS ══════════════════════════════════════════════════════════════ -->
-<section id="certs">
-  <div class="container">
-    <div class="s-label">Credentials</div>
-    <h2 class="s-title">Certifications &amp;<br>Education</h2>
-    <p class="s-sub">Industry-recognised qualifications backing 6+ years of hands-on practice.</p>
-    <div class="certs-grid">
-      <div class="cert-card reveal">
-        <div class="c-icon">🏅</div>
-        <div>
-          <div class="c-name">Project Management Professional (PMP)</div>
-          <div class="c-issuer">Project Management Institute</div>
-        </div>
-      </div>
-      <div class="cert-card reveal">
-        <div class="c-icon">📊</div>
-        <div>
-          <div class="c-name">Microsoft Certified: Power BI Data Analyst Associate</div>
-          <div class="c-issuer">Microsoft</div>
-        </div>
-      </div>
-      <div class="cert-card reveal">
-        <div class="c-icon">📈</div>
-        <div>
-          <div class="c-name">SAS Certified Statistical Business Analyst</div>
-          <div class="c-issuer">SAS Institute</div>
-        </div>
-      </div>
-      <div class="cert-card reveal">
-        <div class="c-icon">🔵</div>
-        <div>
-          <div class="c-name">Tableau Desktop Specialist</div>
-          <div class="c-issuer">Tableau / Salesforce</div>
-        </div>
-      </div>
-      <div class="cert-card reveal">
-        <div class="c-icon">🎓</div>
-        <div>
-          <div class="c-name">M.Sc. Data Science</div>
-          <div class="c-issuer">Manipal Academy of Higher Education (MAHE), India · 2022–2024</div>
-        </div>
-      </div>
-      <div class="cert-card reveal">
-        <div class="c-icon">🌱</div>
-        <div>
-          <div class="c-name">B.Sc. Agricultural Science</div>
-          <div class="c-issuer">Makerere University, Kampala · 2016–2021</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  <!-- ═══ CONTACT ═══════════════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="container">
+      <div class="s-label">Get in touch</div>
+      <h2 class="s-title">Let's work together</h2>
 
-<!-- ═══ CONTACT ════════════════════════════════════════════════════════════ -->
-<section id="contact">
-  <div class="container">
-    <div class="s-label">Get in touch</div>
-    <h2 class="s-title">Let's work together</h2>
-    <div class="contact-layout">
+      <div class="contact-layout">
 
-      <div class="reveal">
-        <p class="contact-intro">Open to Data Science roles, research collaborations, consulting engagements, and conversations about ML, impact evaluation, and development data. Based in Kampala — available remotely worldwide.</p>
-        <div class="c-items">
-          <a href="mailto:johnsonmugarra@yahoo.com" class="c-item">
-            <div class="c-ico">✉</div>
-            <div><div class="c-lbl">Email</div><div class="c-val">johnsonmugarra@yahoo.com</div></div>
-          </a>
-          <a href="tel:+256777108405" class="c-item">
-            <div class="c-ico">📞</div>
-            <div><div class="c-lbl">Phone</div><div class="c-val">+256 777 108 405</div></div>
-          </a>
-          <a href="https://linkedin.com/in/johnsonmugarra" target="_blank" class="c-item">
-            <div class="c-ico">in</div>
-            <div><div class="c-lbl">LinkedIn</div><div class="c-val">linkedin.com/in/johnsonmugarra</div></div>
-          </a>
-          <div class="c-item" style="cursor:default">
-            <div class="c-ico">📍</div>
-            <div><div class="c-lbl">Location</div><div class="c-val">Kampala, Central Region, Uganda</div></div>
+        <!-- Contact info -->
+        <div class="reveal">
+          <p class="contact-intro">
+            Open to Data Science roles, research collaborations, consulting engagements,
+            and conversations about ML, impact evaluation, and development data.
+            Based in Kampala — available remotely worldwide.
+          </p>
+          <div class="c-items">
+            <a href="mailto:johnsonmugarra@yahoo.com" class="c-item">
+              <div class="c-ico">✉</div>
+              <div>
+                <div class="c-lbl">Email</div>
+                <div class="c-val">johnsonmugarra@yahoo.com</div>
+              </div>
+            </a>
+            <a href="tel:+256777108405" class="c-item">
+              <div class="c-ico">📞</div>
+              <div>
+                <div class="c-lbl">Phone</div>
+                <div class="c-val">+256 777 108 405</div>
+              </div>
+            </a>
+            <a href="https://linkedin.com/in/johnsonmugarra" target="_blank" class="c-item">
+              <div class="c-ico">in</div>
+              <div>
+                <div class="c-lbl">LinkedIn</div>
+                <div class="c-val">linkedin.com/in/johnsonmugarra</div>
+              </div>
+            </a>
+            <div class="c-item" style="cursor:default">
+              <div class="c-ico">📍</div>
+              <div>
+                <div class="c-lbl">Location</div>
+                <div class="c-val">Kampala, Central Region, Uganda</div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <form class="contact-form reveal" id="contact-form" novalidate>
-        <div class="form-row">
-          <div class="fg">
-            <label for="fname">Name</label>
-            <input type="text" id="fname" name="name" placeholder="Your name" autocomplete="off"/>
+        <!-- Contact form -->
+        <form class="contact-form reveal" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="fg">
+              <label for="fname">Name</label>
+              <input type="text" id="fname" name="name" placeholder="Your name" autocomplete="off"/>
+            </div>
+            <div class="fg">
+              <label for="femail">Email</label>
+              <input type="email" id="femail" name="email" placeholder="your@email.com" autocomplete="off"/>
+            </div>
           </div>
           <div class="fg">
-            <label for="femail">Email</label>
-            <input type="email" id="femail" name="email" placeholder="your@email.com" autocomplete="off"/>
+            <label for="fsubject">Subject</label>
+            <input type="text" id="fsubject" name="subject" placeholder="Project idea, job opportunity…" autocomplete="off"/>
           </div>
-        </div>
-        <div class="fg">
-          <label for="fsubject">Subject</label>
-          <input type="text" id="fsubject" name="subject" placeholder="Project idea, job opportunity…" autocomplete="off"/>
-        </div>
-        <div class="fg">
-          <label for="fmessage">Message</label>
-          <textarea id="fmessage" name="message" rows="5" placeholder="Tell me about what you're working on…"></textarea>
-        </div>
-        <button type="submit" class="btn-send">Send message →</button>
-        <div class="f-msg" id="f-msg">✓ Message sent — I'll get back to you soon!</div>
-      </form>
+          <div class="fg">
+            <label for="fmessage">Message</label>
+            <textarea id="fmessage" name="message" rows="5" placeholder="Tell me about what you're working on…"></textarea>
+          </div>
+          <button type="submit" class="btn-send">Send message →</button>
+          <div class="f-msg" id="f-msg">✓ Message sent — I'll get back to you soon!</div>
+        </form>
 
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ FOOTER ═════════════════════════════════════════════════════════════ -->
-<footer>
-  <div class="foot-inner">
-    <span class="foot-logo">JM.</span>
-    <span class="foot-copy">© 2026 Johnson Mugarra. Built from scratch.</span>
-    <div class="foot-links">
-      <a href="#hero">Top ↑</a>
-      <a href="mailto:johnsonmugarra@yahoo.com">Email</a>
-      <a href="https://linkedin.com/in/johnsonmugarra" target="_blank">LinkedIn</a>
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="foot-inner">
+      <span class="foot-logo">JM.</span>
+      <span class="foot-copy">© 2026 Johnson Mugarra. Built from scratch.</span>
+      <div class="foot-links">
+        <a href="#hero">Top ↑</a>
+        <a href="mailto:johnsonmugarra@yahoo.com">Email</a>
+        <a href="https://linkedin.com/in/johnsonmugarra" target="_blank">LinkedIn</a>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
-<script>
-'use strict';
-
-/* Scroll progress */
-const bar = document.getElementById('sprogress');
-window.addEventListener('scroll', () => {
-  const pct = scrollY / (document.body.scrollHeight - innerHeight) * 100;
-  bar.style.width = pct + '%';
-});
-
-/* Mobile menu */
-const ham  = document.getElementById('ham');
-const mmenu = document.getElementById('mob-menu');
-const mclose = document.getElementById('mob-close');
-ham.addEventListener('click', () => mmenu.classList.add('open'));
-mclose.addEventListener('click', () => mmenu.classList.remove('open'));
-mmenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mmenu.classList.remove('open')));
-
-/* Reveal on scroll */
-const revEls = document.querySelectorAll('.reveal');
-const revObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const sibs = [...e.target.parentElement.querySelectorAll('.reveal')];
-      const idx  = sibs.indexOf(e.target);
-      e.target.style.transitionDelay = (idx * 0.07) + 's';
-      e.target.classList.add('vis');
-      revObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.1 });
-revEls.forEach(el => revObs.observe(el));
-
-/* Skill bars */
-const skObs = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('.sk-fill').forEach(fill => {
-        setTimeout(() => { fill.style.width = fill.dataset.w + '%'; }, 200);
-      });
-      skObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.2 });
-const skBars = document.getElementById('skill-bars');
-if (skBars) skObs.observe(skBars);
-
-/* Counter animation */
-function count(el, target, dur) {
-  let start = null;
-  const step = (ts) => {
-    if (!start) start = ts;
-    const p = Math.min((ts - start) / dur, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.floor(ease * target);
-    if (p < 1) requestAnimationFrame(step);
-    else el.textContent = target;
-  };
-  requestAnimationFrame(step);
-}
-const mObs = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    count(document.getElementById('m1'), 18, 1600);
-    count(document.getElementById('m2'), 80, 1800);
-    count(document.getElementById('m3'), 95, 1700);
-    count(document.getElementById('m4'), 6,  1400);
-    mObs.disconnect();
-  }
-}, { threshold: 0.4 });
-mObs.observe(document.getElementById('metrics'));
-
-/* Project filter */
-document.getElementById('filter-row').addEventListener('click', e => {
-  if (!e.target.classList.contains('filt')) return;
-  document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
-  e.target.classList.add('active');
-  const f = e.target.dataset.f;
-  document.querySelectorAll('.proj-card').forEach(card => {
-    const cats = (card.dataset.cat || '').split(' ');
-    if (f === 'all' || cats.includes(f)) card.classList.remove('hidden');
-    else card.classList.add('hidden');
-  });
-});
-
-/* Contact form */
-document.getElementById('contact-form').addEventListener('submit', e => {
-  e.preventDefault();
-  const msg = document.getElementById('f-msg');
-  msg.classList.add('show');
-  e.target.reset();
-  setTimeout(() => msg.classList.remove('show'), 5000);
-});
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
