@@ -148,18 +148,18 @@ nav {
 }
 @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.25; } }
 
-/* hero heading — NO br tags; letter-spacing kept gentle */
 h1.hero-name {
   font-family: var(--syne);
   font-size: clamp(2.6rem, 5.5vw, 5rem);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -.02em;   /* tighter but not extreme */
+  line-height: 1.1;
+  letter-spacing: normal;
   margin-bottom: .55rem;
-  word-break: keep-all;     /* prevent odd line breaks */
+  text-align: left;
 }
 h1.hero-name em {
-  font-style: normal; display: block;
+  font-style: normal;
+  display: inline;
   background: linear-gradient(120deg, var(--cyan) 0%, #90F4FF 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
@@ -283,15 +283,15 @@ section { padding: 6rem 5%; position: relative; z-index: 1; }
 }
 .s-label::before { content: ''; width: 22px; height: 1px; background: var(--cyan); }
 
-/* Section title — fixed: no br stretching, gentle tracking */
 .s-title {
   font-family: var(--syne);
   font-size: clamp(1.8rem, 3vw, 2.6rem);
   font-weight: 800;
-  letter-spacing: -.02em;
-  line-height: 1.15;
+  letter-spacing: normal;
+  line-height: 1.2;
   margin-bottom: .85rem;
-  word-break: keep-all;
+  text-align: left;
+  max-width: 720px;
 }
 
 .s-sub {
@@ -549,7 +549,7 @@ footer {
   .proj-grid            { grid-template-columns: 1fr; }
   .form-row             { grid-template-columns: 1fr; }
   .metrics-grid         { grid-template-columns: 1fr 1fr; }
-  h1.hero-name          { font-size: 2.6rem; }
-  .s-title              { font-size: 1.7rem; }
+  h1.hero-name { font-size: 2.4rem; letter-spacing: normal; }
+  .s-title      { font-size: 1.65rem; letter-spacing: normal; }
   section               { padding: 4rem 5%; }
 }
