@@ -127,16 +127,66 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  /* 7. Contact form */
-  var form = document.getElementById('contact-form');
+  /* 7. Contact form — sends via Formspree
+     ─────────────────────────────────────────────────────────────
+     SETUP (one-time, free):
+       1. Go to https://formspree.io and create a free account.
+       2. Click "New Form", name it, enter johnsonmugarra@yahoo.com
+          as the email that receives submissions.
+       3. Copy your Form ID  (looks like:  xpwzabcd )
+       4. Replace  YOUR_FORM_ID  below with that ID.
+     ─────────────────────────────────────────────────────────────
+  */
+  var FORMSPREE_ID = 'xpqyjjbq';   // <-- paste your ID here
+
+  var form    = document.getElementById('contact-form');
+  var sendBtn = document.getElementById('send-btn');
+  var fMsg    = document.getElementById('f-msg');
+
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var msg = document.getElementById('f-msg');
-      if (msg) { msg.classList.add('show'); }
-      form.reset();
-      setTimeout(function () { if (msg) msg.classList.remove('show'); }, 5000);
+
+      if (FORMSPREE_ID === 'YOUR_FORM_ID') {
+        showMsg('error', '&#x26A0; Please set up Formspree first — see the instructions in script.js');
+        return;
+      }
+
+      /* Disable button while sending */
+      if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending…'; }
+
+      var data = new FormData(form);
+
+      fetch('https://formspree.io/f/' + FORMSPREE_ID, {
+        method:  'POST',
+        body:    data,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function (res) {
+        if (res.ok) {
+          showMsg('success', '&#x2713; Message sent! I\'ll get back to you soon.');
+          form.reset();
+        } else {
+          res.json().then(function (json) {
+            var err = (json.errors || []).map(function (e) { return e.message; }).join(', ');
+            showMsg('error', '&#x26A0; Could not send: ' + (err || 'unknown error'));
+          });
+        }
+      })
+      .catch(function () {
+        showMsg('error', '&#x26A0; Network error — please email me directly at johnsonmugarra@yahoo.com');
+      })
+      .finally(function () {
+        if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = 'Send message \u2192'; }
+      });
     });
+  }
+
+  function showMsg(type, html) {
+    if (!fMsg) return;
+    fMsg.innerHTML = html;
+    fMsg.className = 'f-msg show ' + type;
+    setTimeout(function () { fMsg.classList.remove('show'); }, 7000);
   }
 
 }); /* end DOMContentLoaded */

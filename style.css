@@ -469,6 +469,12 @@ input::placeholder, textarea::placeholder { color: var(--muted); opacity: .5; }
   border: 1px solid rgba(0,200,255,.18); display: none;
 }
 .f-msg.show { display: block; }
+.f-msg.error {
+  color: #FF6B6B;
+  background: rgba(255,107,107,.08);
+  border-color: rgba(255,107,107,.25);
+}
+.btn-send:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* ══════════════════════════════════════════
    FOOTER
