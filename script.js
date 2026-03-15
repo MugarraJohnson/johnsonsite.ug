@@ -1,111 +1,123 @@
-/* ═══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════
    script.js — Johnson Mugarra Portfolio
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════ */
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
 
-  /* ── 1. Scroll progress bar ─────────────────────────────── */
-  const bar = document.getElementById('sprogress');
-  window.addEventListener('scroll', () => {
-    const pct = scrollY / (document.body.scrollHeight - innerHeight) * 100;
-    bar.style.width = pct + '%';
+  /* 1. Scroll progress bar */
+  var bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', function () {
+    var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    if (bar) bar.style.width = pct + '%';
   }, { passive: true });
 
 
-  /* ── 2. Mobile menu ─────────────────────────────────────── */
-  const ham    = document.getElementById('ham');
-  const mmenu  = document.getElementById('mob-menu');
-  const mclose = document.getElementById('mob-close');
-
-  ham.addEventListener('click',   () => mmenu.classList.add('open'));
-  mclose.addEventListener('click',() => mmenu.classList.remove('open'));
-  mmenu.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => mmenu.classList.remove('open'))
-  );
-
-
-  /* ── 3. Reveal on scroll ────────────────────────────────── */
-  const revEls = document.querySelectorAll('.reveal');
-  const revObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      // stagger siblings slightly
-      const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
-      const idx = siblings.indexOf(entry.target);
-      entry.target.style.transitionDelay = (idx * 0.07) + 's';
-      entry.target.classList.add('vis');
-      revObs.unobserve(entry.target);
+  /* 2. Mobile menu */
+  var ham    = document.getElementById('ham');
+  var mmenu  = document.getElementById('mob-menu');
+  var mclose = document.getElementById('mob-close');
+  if (ham)    ham.addEventListener('click',    function () { mmenu.classList.add('open'); });
+  if (mclose) mclose.addEventListener('click', function () { mmenu.classList.remove('open'); });
+  if (mmenu) {
+    mmenu.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { mmenu.classList.remove('open'); });
     });
-  }, { threshold: 0.1 });
-
-  revEls.forEach(el => revObs.observe(el));
-
-
-  /* ── 4. Skill bars animate in ───────────────────────────── */
-  const skillSection = document.getElementById('skill-bars');
-  if (skillSection) {
-    const skObs = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        skillSection.querySelectorAll('.sk-fill').forEach(fill => {
-          setTimeout(() => {
-            fill.style.width = fill.dataset.w + '%';
-          }, 200);
-        });
-        skObs.unobserve(skillSection);
-      }
-    }, { threshold: 0.2 });
-    skObs.observe(skillSection);
   }
 
 
-  /* ── 5. Counter animation ───────────────────────────────── */
-  function animateCount(el, target, duration) {
-    let startTime = null;
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const elapsed  = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // ease out cubic
-      const ease = 1 - Math.pow(1 - progress, 3);
+  /* 3. Scroll-reveal for non-project elements only */
+  var fadeEls = document.querySelectorAll('.fade-in');
+  if (fadeEls.length && 'IntersectionObserver' in window) {
+    var fadeObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var siblings = Array.from(entry.target.parentElement.querySelectorAll('.fade-in'));
+        var idx = siblings.indexOf(entry.target);
+        entry.target.style.transitionDelay = (idx * 0.06) + 's';
+        entry.target.classList.add('visible');
+        fadeObs.unobserve(entry.target);
+      });
+    }, { threshold: 0.08 });
+    fadeEls.forEach(function (el) { fadeObs.observe(el); });
+  } else {
+    /* Fallback: show everything if no IntersectionObserver */
+    fadeEls.forEach(function (el) { el.classList.add('visible'); });
+  }
+
+
+  /* 4. Skill bars animate in */
+  var skillSection = document.getElementById('skill-bars');
+  if (skillSection) {
+    function animateBars() {
+      skillSection.querySelectorAll('.sk-fill').forEach(function (fill) {
+        fill.style.width = (fill.dataset.w || '0') + '%';
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var skObs = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          setTimeout(animateBars, 150);
+          skObs.unobserve(skillSection);
+        }
+      }, { threshold: 0.15 });
+      skObs.observe(skillSection);
+    } else {
+      animateBars();
+    }
+  }
+
+
+  /* 5. Metrics counter */
+  function countUp(el, target, duration) {
+    if (!el) return;
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p    = Math.min((ts - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
       el.textContent = Math.floor(ease * target);
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        el.textContent = target;
-      }
-    };
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
     requestAnimationFrame(step);
   }
 
-  const metricsEl = document.getElementById('metrics');
+  var metricsEl = document.getElementById('metrics');
   if (metricsEl) {
-    const mObs = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        animateCount(document.getElementById('m1'), 18, 1600);
-        animateCount(document.getElementById('m2'), 80, 1800);
-        animateCount(document.getElementById('m3'), 95, 1700);
-        animateCount(document.getElementById('m4'),  6, 1400);
-        mObs.disconnect();
-      }
-    }, { threshold: 0.4 });
-    mObs.observe(metricsEl);
+    var counted = false;
+    if ('IntersectionObserver' in window) {
+      var mObs = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting && !counted) {
+          counted = true;
+          countUp(document.getElementById('m1'), 18, 1500);
+          countUp(document.getElementById('m2'), 80, 1700);
+          countUp(document.getElementById('m3'), 95, 1600);
+          countUp(document.getElementById('m4'),  6, 1300);
+          mObs.disconnect();
+        }
+      }, { threshold: 0.35 });
+      mObs.observe(metricsEl);
+    } else {
+      document.getElementById('m1').textContent = '18';
+      document.getElementById('m2').textContent = '80';
+      document.getElementById('m3').textContent = '95';
+      document.getElementById('m4').textContent = '6';
+    }
   }
 
 
-  /* ── 6. Project filter ──────────────────────────────────── */
-  const filterRow = document.getElementById('filter-row');
+  /* 6. Project filter */
+  var filterRow = document.getElementById('filter-row');
   if (filterRow) {
-    filterRow.addEventListener('click', e => {
+    filterRow.addEventListener('click', function (e) {
       if (!e.target.classList.contains('filt')) return;
-
-      document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filt').forEach(function (b) { b.classList.remove('active'); });
       e.target.classList.add('active');
-
-      const filter = e.target.dataset.f;
-      document.querySelectorAll('.proj-card').forEach(card => {
-        const cats = (card.dataset.cat || '').split(' ');
-        if (filter === 'all' || cats.includes(filter)) {
+      var f = e.target.getAttribute('data-f');
+      document.querySelectorAll('.proj-card').forEach(function (card) {
+        var cats = (card.getAttribute('data-cat') || '').split(' ');
+        if (f === 'all' || cats.indexOf(f) !== -1) {
           card.classList.remove('hidden');
         } else {
           card.classList.add('hidden');
@@ -115,16 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ── 7. Contact form ────────────────────────────────────── */
-  const form = document.getElementById('contact-form');
+  /* 7. Contact form */
+  var form = document.getElementById('contact-form');
   if (form) {
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
-      const msg = document.getElementById('f-msg');
-      msg.classList.add('show');
+      var msg = document.getElementById('f-msg');
+      if (msg) { msg.classList.add('show'); }
       form.reset();
-      setTimeout(() => msg.classList.remove('show'), 5000);
+      setTimeout(function () { if (msg) msg.classList.remove('show'); }, 5000);
     });
   }
 
-}); // end DOMContentLoaded
+}); /* end DOMContentLoaded */

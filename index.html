@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Johnson Mugarra — Data Scientist</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500@display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Scroll progress bar -->
-  <div id="sprogress"></div>
+  <div id="progress-bar"></div>
 
-  <!-- ═══ NAVIGATION ═══════════════════════════════════════════════ -->
+  <!-- ═══ NAV ═══════════════════════════════════════════════ -->
   <nav>
-    <a href="#" class="nav-logo">JM<span>.</span></a>
+    <a href="#hero" class="nav-logo">JM<span>.</span></a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
@@ -25,14 +24,14 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a href="#contact" class="nav-cta">Hire me</a>
-    <button class="hamburger" id="ham" aria-label="Menu">
+    <button class="hamburger" id="ham" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
-  <!-- Mobile menu -->
-  <div class="mobile-menu" id="mob-menu">
-    <button class="mob-close" id="mob-close">✕</button>
+  <!-- Mobile overlay -->
+  <div class="mob-menu" id="mob-menu">
+    <button class="mob-close" id="mob-close">&#x2715;</button>
     <a href="#about">About</a>
     <a href="#projects">Projects</a>
     <a href="#skills">Skills</a>
@@ -40,17 +39,16 @@
     <a href="#contact">Contact</a>
   </div>
 
-  <!-- ═══ HERO ══════════════════════════════════════════════════════ -->
+  <!-- ═══ HERO ═══════════════════════════════════════════════ -->
   <section id="hero">
     <div class="hero-inner container">
 
-      <!-- Left: text -->
-      <div class="hero-left">
+      <!-- Left -->
+      <div>
         <div class="hero-badge">Available for opportunities</div>
 
         <h1 class="hero-name">
-          Johnson
-          <em>Mugarra</em>
+          Johnson <em>Mugarra</em>
         </h1>
 
         <p class="hero-role">Data Scientist &nbsp;/&nbsp; Research &amp; MEAL Specialist</p>
@@ -63,45 +61,39 @@
         </p>
 
         <div class="hero-btns">
-          <a href="#projects" class="btn-primary">View my work →</a>
+          <a href="#projects" class="btn-primary">View my work &#x2192;</a>
           <a href="#contact"  class="btn-ghost">Get in touch</a>
         </div>
       </div>
 
-      <!-- Right: profile card -->
-      <div class="profile-card reveal">
+      <!-- Profile card -->
+      <div class="profile-card">
         <div class="pic-wrap">
           <div class="pic-ring"></div>
           <div class="pic-inner">
             <!--
-              ════════════════════════════════════════
-              TO ADD YOUR PHOTO:
-              1. Save your photo as  photo.jpg  in the same
-                 folder as index.html (next to style.css).
-              2. Delete the <div class="pic-ph">…</div> below.
-              3. Paste this in its place:
-                 <img src="photo.jpg" alt="Johnson Mugarra"
-                      style="width:100%;height:100%;
-                             object-fit:cover;border-radius:50%">
-              ════════════════════════════════════════
+              YOUR PHOTO:
+              Put photo.jpg in the same folder as index.html.
+              The image below will load automatically.
+              If it fails to load the silhouette placeholder appears.
             -->
             <img src="photo.jpg" alt="Johnson Mugarra"
-                      style="width:100%;height:100%;
-                             object-fit:cover;border-radius:50%">
-              <svg width="38" height="38" viewBox="0 0 24 24"
-                   fill="none" stroke="#7A8BA4" stroke-width="1.2">
+                 onerror="this.style.display='none';document.getElementById('pic-ph').style.display='flex'">
+            <div class="pic-ph" id="pic-ph" style="display:none">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
+                   stroke="#6E8099" stroke-width="1.2">
                 <circle cx="12" cy="8" r="4"/>
                 <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
               </svg>
-              <small>Add your<br>photo here</small>
+              <small>Place photo.jpg<br>in this folder</small>
             </div>
           </div>
         </div>
         <p class="p-name">Johnson Mugarra</p>
         <p class="p-role">Data Scientist</p>
         <p class="p-loc">
-          <svg width="11" height="11" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
             <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
             <circle cx="12" cy="10" r="3"/>
           </svg>
@@ -119,29 +111,29 @@
     </div>
   </section>
 
-  <!-- ═══ METRICS ══════════════════════════════════════════════════ -->
+  <!-- ═══ METRICS ═══════════════════════════════════════════ -->
   <div id="metrics">
     <div class="metrics-grid">
-      <div class="metric reveal">
-        <div class="metric-val"><span id="m1">0</span>%</div>
+      <div class="metric">
+        <div class="metric-val"><span id="m1">18</span>%</div>
         <div class="metric-lbl">MAE reduction<br>crop yield forecast</div>
       </div>
-      <div class="metric reveal">
-        <div class="metric-val"><span id="m2">0</span>%</div>
-        <div class="metric-lbl">Faster evaluation cycles<br>6 weeks → 10 days</div>
+      <div class="metric">
+        <div class="metric-val"><span id="m2">80</span>%</div>
+        <div class="metric-lbl">Faster evaluation cycles<br>6 weeks &#x2192; 10 days</div>
       </div>
-      <div class="metric reveal">
-        <div class="metric-val"><span id="m3">0</span>%<sup>+</sup></div>
+      <div class="metric">
+        <div class="metric-val"><span id="m3">95</span>%<sup>+</sup></div>
         <div class="metric-lbl">Data reliability<br>USAID SITES</div>
       </div>
-      <div class="metric reveal">
-        <div class="metric-val"><span id="m4">0</span><sup>+ yrs</sup></div>
+      <div class="metric">
+        <div class="metric-val"><span id="m4">6</span><sup>+ yrs</sup></div>
         <div class="metric-lbl">ML &amp; development<br>analytics experience</div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ ABOUT ═════════════════════════════════════════════════════ -->
+  <!-- ═══ ABOUT ══════════════════════════════════════════════ -->
   <section id="about">
     <div class="container">
       <div class="s-label">About me</div>
@@ -149,10 +141,9 @@
 
       <div class="about-grid">
 
-        <!-- About text -->
-        <div class="about-text reveal">
+        <div class="about-text fade-in">
           <p>
-            I'm a Data Scientist who works at the intersection of <strong>machine learning,
+            I'm a Data Scientist working at the intersection of <strong>machine learning,
             impact evaluation, and development policy</strong>. Over six years I've designed
             and deployed production-grade ML systems, automated ETL pipelines, and interactive
             dashboards used by government ministries, USAID programmes, and international NGOs
@@ -171,48 +162,50 @@
             in PMP, Power BI, SAS Statistics, and Tableau. Based in Kampala — available for
             remote and international roles.
           </p>
-          <a href="#contact" class="btn-primary" style="margin-top:1.6rem;display:inline-flex">
-            Let's connect →
+          <a href="#contact" class="btn-primary" style="margin-top:1.4rem;display:inline-flex">
+            Let's connect &#x2192;
           </a>
         </div>
 
-        <!-- Experience timeline -->
-        <div class="reveal">
+        <div class="fade-in">
           <div class="timeline">
 
             <div class="t-item">
               <div class="t-date">2025<br>Now</div>
-              <div style="position:relative;padding-left:1.3rem">
+              <div class="t-body">
+                <div class="t-line"></div>
                 <div class="t-dot"></div>
                 <div class="t-role">Research &amp; MEAL Specialist</div>
-                <div class="t-org">CRC — Banadir, Somalia (Remote)</div>
-                <div class="t-desc">Leading quantitative &amp; qualitative analysis for multi-sector humanitarian programs; improved effectiveness 20–30%.</div>
+                <div class="t-org">CRC &#x2014; Banadir, Somalia (Remote)</div>
+                <div class="t-desc">Leading quantitative &amp; qualitative analysis for multi-sector humanitarian programs; improved effectiveness 20&#x2013;30%.</div>
               </div>
             </div>
 
             <div class="t-item">
               <div class="t-date">2024<br>2025</div>
-              <div style="position:relative;padding-left:1.3rem">
+              <div class="t-body">
+                <div class="t-line"></div>
                 <div class="t-dot"></div>
                 <div class="t-role">Data Scientist</div>
-                <div class="t-org">MAAIF – VANEX, Makerere &amp; CRS</div>
+                <div class="t-org">MAAIF &#x2013; VANEX, Makerere &amp; CRS</div>
                 <div class="t-desc">End-to-end ML forecasting; 18% MAE reduction; findings presented to President Museveni.</div>
               </div>
             </div>
 
             <div class="t-item">
               <div class="t-date">2023<br>2025</div>
-              <div style="position:relative;padding-left:1.3rem">
+              <div class="t-body">
+                <div class="t-line"></div>
                 <div class="t-dot"></div>
                 <div class="t-role">Data Analyst &amp; Research Associate</div>
-                <div class="t-org">USAID-SITES — DLH Corp / SSS Inc.</div>
+                <div class="t-org">USAID-SITES &#x2014; DLH Corp / SSS Inc.</div>
                 <div class="t-desc">95%+ data reliability; automated pipelines; 80% faster evaluation cycles.</div>
               </div>
             </div>
 
             <div class="t-item">
               <div class="t-date">2021<br>2023</div>
-              <div style="position:relative;padding-left:1.3rem">
+              <div class="t-body">
                 <div class="t-dot"></div>
                 <div class="t-role">Data Analyst / Research Associate</div>
                 <div class="t-org">Bronkar (U) Limited</div>
@@ -227,7 +220,7 @@
     </div>
   </section>
 
-  <!-- ═══ PROJECTS ══════════════════════════════════════════════════ -->
+  <!-- ═══ PROJECTS ═══════════════════════════════════════════ -->
   <section id="projects">
     <div class="container">
       <div class="s-label">Selected Work</div>
@@ -237,7 +230,6 @@
         humanitarian response, and development analytics.
       </p>
 
-      <!-- Filter buttons -->
       <div class="filter-row" id="filter-row">
         <button class="filt active" data-f="all">All</button>
         <button class="filt" data-f="ml">ML / AI</button>
@@ -246,16 +238,16 @@
         <button class="filt" data-f="nlp">NLP / Automation</button>
       </div>
 
-      <!-- Project cards -->
+      <!-- Project cards — always visible, no fade class -->
       <div class="proj-grid" id="proj-grid">
 
-        <div class="proj-card reveal" data-cat="ml engineering">
-          <div class="p-icon">🌾</div>
+        <div class="proj-card" data-cat="ml engineering">
+          <div class="p-icon">&#x1F33E;</div>
           <h3>Climate-Resilient Crop Yield Forecasting</h3>
-          <p>Full-stack time-series pipeline integrating NASA POWER API, satellite NDVI, and soil
-             data to forecast vanilla yields for Ugandan smallholders. Achieved <strong>18% MAE
-             reduction</strong> vs baseline with Prophet + hierarchical reconciliation. Dashboard
-             actively used by MAAIF extension officers.</p>
+          <p>Full-stack time-series pipeline integrating NASA POWER API, satellite NDVI, and
+             soil data to forecast vanilla yields for Ugandan smallholders. Achieved
+             <strong>18% MAE reduction</strong> vs baseline with Prophet + hierarchical
+             reconciliation. Dashboard actively used by MAAIF extension officers.</p>
           <div class="p-tags">
             <span class="ptag">Python</span><span class="ptag">Prophet</span>
             <span class="ptag">NASA API</span><span class="ptag">Tableau</span>
@@ -263,32 +255,33 @@
           </div>
         </div>
 
-        <div class="proj-card reveal" data-cat="ml engineering analytics">
-          <div class="p-icon">⚙️</div>
+        <div class="proj-card" data-cat="ml engineering analytics">
+          <div class="p-icon">&#x2699;&#xFE0F;</div>
           <h3>Automated Impact Evaluation Pipeline</h3>
-          <p>Python + Airflow pipeline ingesting KoboToolbox/SurveyCTO surveys, applying PSM &amp;
-             DiD causal inference, and auto-generating Tableau reports. Reduced evaluation cycle
-             from <strong>6 weeks to under 10 days</strong> across 12 concurrent initiatives.</p>
+          <p>Python + Airflow pipeline ingesting KoboToolbox/SurveyCTO surveys, applying
+             PSM &amp; DiD causal inference, and auto-generating Tableau reports. Reduced
+             evaluation cycle from <strong>6 weeks to under 10 days</strong> across 12
+             concurrent initiatives.</p>
           <div class="p-tags">
             <span class="ptag">Python</span><span class="ptag">Airflow</span>
             <span class="ptag">PostgreSQL</span><span class="ptag">Power BI</span>
           </div>
         </div>
 
-        <div class="proj-card reveal" data-cat="analytics">
-          <div class="p-icon">🗺️</div>
+        <div class="proj-card" data-cat="analytics">
+          <div class="p-icon">&#x1F5FA;&#xFE0F;</div>
           <h3>Geospatial Analytics &amp; Real-Time Mapping</h3>
-          <p>Advanced interactive dashboards combining ArcGIS and Power BI for real-time decision
-             support in East Africa development programs. Enabled <strong>15% gains</strong> in
-             operational efficiency for USAID SITES field teams.</p>
+          <p>Advanced interactive dashboards combining ArcGIS and Power BI for real-time
+             decision support in East Africa development programs. Enabled <strong>15%
+             gains</strong> in operational efficiency for USAID SITES field teams.</p>
           <div class="p-tags">
             <span class="ptag">ArcGIS</span><span class="ptag">Power BI</span>
             <span class="ptag">SQL</span><span class="ptag">Looker Studio</span>
           </div>
         </div>
 
-        <div class="proj-card reveal" data-cat="nlp ml">
-          <div class="p-icon">💬</div>
+        <div class="proj-card" data-cat="nlp ml">
+          <div class="p-icon">&#x1F4AC;</div>
           <h3>NLP Sentiment Analysis</h3>
           <p>Applied NLP techniques to conversational datasets to extract sentiment insights
              supporting evidence-based decision-making in humanitarian programme monitoring
@@ -299,24 +292,23 @@
           </div>
         </div>
 
-        <div class="proj-card reveal" data-cat="nlp engineering">
-          <div class="p-icon">🤖</div>
+        <div class="proj-card" data-cat="nlp engineering">
+          <div class="p-icon">&#x1F916;</div>
           <h3>Web Scraping &amp; Automation Framework</h3>
-          <p>Python + Selenium scripts for automated data ingestion, metadata embedding, and
-             structured CSV output — demonstrating scalable pipeline engineering at production
-             scale.</p>
+          <p>Python + Selenium scripts for automated data ingestion, metadata embedding,
+             and structured CSV output at production scale.</p>
           <div class="p-tags">
             <span class="ptag">Python</span><span class="ptag">Selenium</span>
             <span class="ptag">ETL</span><span class="ptag">Automation</span>
           </div>
         </div>
 
-        <div class="proj-card reveal" data-cat="analytics ml">
-          <div class="p-icon">📊</div>
-          <h3>M&amp;E Analytics Dashboards — USAID SITES</h3>
-          <p>Stakeholder-focused interactive dashboards enabling real-time programme adjustments.
-             Achieved <strong>95%+ data reliability</strong> for high-stakes impact evaluations
-             using rigorous SQL/Python cleaning pipelines.</p>
+        <div class="proj-card" data-cat="analytics ml">
+          <div class="p-icon">&#x1F4CA;</div>
+          <h3>M&amp;E Analytics Dashboards &#x2014; USAID SITES</h3>
+          <p>Stakeholder-focused interactive dashboards enabling real-time programme
+             adjustments. Achieved <strong>95%+ data reliability</strong> for high-stakes
+             impact evaluations using rigorous SQL/Python cleaning pipelines.</p>
           <div class="p-tags">
             <span class="ptag">SQL</span><span class="ptag">Python</span>
             <span class="ptag">Tableau</span><span class="ptag">KoboToolbox</span>
@@ -327,7 +319,7 @@
     </div>
   </section>
 
-  <!-- ═══ SKILLS ════════════════════════════════════════════════════ -->
+  <!-- ═══ SKILLS ═════════════════════════════════════════════ -->
   <section id="skills">
     <div class="container">
       <div class="s-label">Technical Skills</div>
@@ -335,71 +327,43 @@
 
       <div class="skills-layout">
 
-        <!-- Skill bars -->
-        <div class="reveal" id="skill-bars">
+        <div id="skill-bars">
           <div class="sg-title">Programming &amp; ML</div>
 
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">Python (ML / Data Science)</span>
-              <span class="sk-pct">95%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">Python (ML / Data Science)</span><span class="sk-pct">95%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="95"></div></div>
           </div>
-
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">SQL &amp; Databases</span>
-              <span class="sk-pct">90%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">SQL &amp; Databases</span><span class="sk-pct">90%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="90"></div></div>
           </div>
-
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">Machine Learning &amp; Statistics</span>
-              <span class="sk-pct">90%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">Machine Learning &amp; Statistics</span><span class="sk-pct">90%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="90"></div></div>
           </div>
-
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">R Programming</span>
-              <span class="sk-pct">88%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">R Programming</span><span class="sk-pct">88%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="88"></div></div>
           </div>
 
           <div class="sg-title">Analytics &amp; Engineering</div>
 
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">Tableau / Power BI</span>
-              <span class="sk-pct">92%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">Tableau / Power BI</span><span class="sk-pct">92%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="92"></div></div>
           </div>
-
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">ETL Pipelines / Airflow</span>
-              <span class="sk-pct">85%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">ETL Pipelines / Airflow</span><span class="sk-pct">85%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="85"></div></div>
           </div>
-
           <div class="sk-row">
-            <div class="sk-meta">
-              <span class="sk-name">NLP &amp; Time-Series Forecasting</span>
-              <span class="sk-pct">82%</span>
-            </div>
+            <div class="sk-meta"><span class="sk-name">NLP &amp; Time-Series Forecasting</span><span class="sk-pct">82%</span></div>
             <div class="sk-track"><div class="sk-fill" data-w="82"></div></div>
           </div>
         </div>
 
-        <!-- Technology badges -->
-        <div class="reveal">
+        <div>
           <div class="bdg-group">
             <div class="bdg-label">Languages</div>
             <div class="bdg-wrap">
@@ -437,7 +401,7 @@
     </div>
   </section>
 
-  <!-- ═══ CERTIFICATIONS ════════════════════════════════════════════ -->
+  <!-- ═══ CERTIFICATIONS ══════════════════════════════════════ -->
   <section id="certs">
     <div class="container">
       <div class="s-label">Credentials</div>
@@ -445,53 +409,53 @@
       <p class="s-sub">Industry-recognised qualifications backing 6+ years of hands-on practice.</p>
 
       <div class="certs-grid">
-        <div class="cert-card reveal">
-          <div class="c-icon">🏅</div>
+        <div class="cert-card fade-in">
+          <div class="c-icon">&#x1F3C5;</div>
           <div>
             <div class="c-name">Project Management Professional (PMP)</div>
             <div class="c-issuer">Project Management Institute</div>
           </div>
         </div>
-        <div class="cert-card reveal">
-          <div class="c-icon">📊</div>
+        <div class="cert-card fade-in">
+          <div class="c-icon">&#x1F4CA;</div>
           <div>
             <div class="c-name">Microsoft Certified: Power BI Data Analyst Associate</div>
             <div class="c-issuer">Microsoft</div>
           </div>
         </div>
-        <div class="cert-card reveal">
-          <div class="c-icon">📈</div>
+        <div class="cert-card fade-in">
+          <div class="c-icon">&#x1F4C8;</div>
           <div>
             <div class="c-name">SAS Certified Statistical Business Analyst</div>
             <div class="c-issuer">SAS Institute</div>
           </div>
         </div>
-        <div class="cert-card reveal">
-          <div class="c-icon">🔵</div>
+        <div class="cert-card fade-in">
+          <div class="c-icon">&#x1F535;</div>
           <div>
             <div class="c-name">Tableau Desktop Specialist</div>
             <div class="c-issuer">Tableau / Salesforce</div>
           </div>
         </div>
-        <div class="cert-card reveal">
-          <div class="c-icon">🎓</div>
+        <div class="cert-card fade-in">
+          <div class="c-icon">&#x1F393;</div>
           <div>
             <div class="c-name">M.Sc. Data Science</div>
-            <div class="c-issuer">Manipal Academy of Higher Education (MAHE), India · 2022–2024</div>
+            <div class="c-issuer">Manipal Academy of Higher Education (MAHE), India &middot; 2022&#x2013;2024</div>
           </div>
         </div>
-        <div class="cert-card reveal">
-          <div class="c-icon">🌱</div>
+        <div class="cert-card fade-in">
+          <div class="c-icon">&#x1F331;</div>
           <div>
             <div class="c-name">B.Sc. Agricultural Science</div>
-            <div class="c-issuer">Makerere University, Kampala · 2016–2021</div>
+            <div class="c-issuer">Makerere University, Kampala &middot; 2016&#x2013;2021</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ═══ CONTACT ═══════════════════════════════════════════════════ -->
+  <!-- ═══ CONTACT ═════════════════════════════════════════════ -->
   <section id="contact">
     <div class="container">
       <div class="s-label">Get in touch</div>
@@ -499,82 +463,68 @@
 
       <div class="contact-layout">
 
-        <!-- Contact info -->
-        <div class="reveal">
+        <div class="fade-in">
           <p class="contact-intro">
             Open to Data Science roles, research collaborations, consulting engagements,
             and conversations about ML, impact evaluation, and development data.
-            Based in Kampala — available remotely worldwide.
+            Based in Kampala &#x2014; available remotely worldwide.
           </p>
           <div class="c-items">
             <a href="mailto:johnsonmugarra@yahoo.com" class="c-item">
-              <div class="c-ico">✉</div>
-              <div>
-                <div class="c-lbl">Email</div>
-                <div class="c-val">johnsonmugarra@yahoo.com</div>
-              </div>
+              <div class="c-ico">&#x2709;</div>
+              <div><div class="c-lbl">Email</div><div class="c-val">johnsonmugarra@yahoo.com</div></div>
             </a>
             <a href="tel:+256777108405" class="c-item">
-              <div class="c-ico">📞</div>
-              <div>
-                <div class="c-lbl">Phone</div>
-                <div class="c-val">+256 777 108 405</div>
-              </div>
+              <div class="c-ico">&#x1F4DE;</div>
+              <div><div class="c-lbl">Phone</div><div class="c-val">+256 777 108 405</div></div>
             </a>
-            <a href="https://linkedin.com/in/johnsonmugarra" target="_blank" class="c-item">
+            <a href="https://linkedin.com/in/johnsonmugarra" target="_blank" rel="noopener" class="c-item">
               <div class="c-ico">in</div>
-              <div>
-                <div class="c-lbl">LinkedIn</div>
-                <div class="c-val">linkedin.com/in/johnsonmugarra</div>
-              </div>
+              <div><div class="c-lbl">LinkedIn</div><div class="c-val">linkedin.com/in/johnsonmugarra</div></div>
             </a>
             <div class="c-item" style="cursor:default">
-              <div class="c-ico">📍</div>
-              <div>
-                <div class="c-lbl">Location</div>
-                <div class="c-val">Kampala, Central Region, Uganda</div>
-              </div>
+              <div class="c-ico">&#x1F4CD;</div>
+              <div><div class="c-lbl">Location</div><div class="c-val">Kampala, Central Region, Uganda</div></div>
             </div>
           </div>
         </div>
 
-        <!-- Contact form -->
-        <form class="contact-form reveal" id="contact-form" novalidate>
+        <form class="contact-form fade-in" id="contact-form" novalidate>
           <div class="form-row">
             <div class="fg">
               <label for="fname">Name</label>
-              <input type="text" id="fname" name="name" placeholder="Your name" autocomplete="off"/>
+              <input type="text" id="fname" name="name" placeholder="Your name" autocomplete="off" />
             </div>
             <div class="fg">
               <label for="femail">Email</label>
-              <input type="email" id="femail" name="email" placeholder="your@email.com" autocomplete="off"/>
+              <input type="email" id="femail" name="email" placeholder="your@email.com" autocomplete="off" />
             </div>
           </div>
           <div class="fg">
             <label for="fsubject">Subject</label>
-            <input type="text" id="fsubject" name="subject" placeholder="Project idea, job opportunity…" autocomplete="off"/>
+            <input type="text" id="fsubject" name="subject" placeholder="Project idea, job opportunity&#x2026;" autocomplete="off" />
           </div>
           <div class="fg">
             <label for="fmessage">Message</label>
-            <textarea id="fmessage" name="message" rows="5" placeholder="Tell me about what you're working on…"></textarea>
+            <textarea id="fmessage" name="message" rows="5" placeholder="Tell me about what you're working on&#x2026;"></textarea>
           </div>
-          <button type="submit" class="btn-send">Send message →</button>
-          <div class="f-msg" id="f-msg">✓ Message sent — I'll get back to you soon!</div>
+          <button type="submit" class="btn-send">Send message &#x2192;</button>
+          <div class="f-msg" id="f-msg">&#x2713; Message sent &#x2014; I'll get back to you soon!</div>
         </form>
 
       </div>
     </div>
   </section>
 
-  <!-- ═══ FOOTER ════════════════════════════════════════════════════ -->
+  <!-- ═══ FOOTER ══════════════════════════════════════════════ -->
   <footer>
     <div class="foot-inner">
       <span class="foot-logo">JM.</span>
-      <span class="foot-copy">© 2026 Johnson Mugarra. Built from scratch.</span>
+      <span class="foot-copy">&copy; 2026 Johnson Mugarra. Built from scratch.</span>
       <div class="foot-links">
-        <a href="#hero">Top ↑</a>
+        <a href="#hero">Top &#x2191;</a>
         <a href="mailto:johnsonmugarra@yahoo.com">Email</a>
-        <a href="https://linkedin.com/in/johnsonmugarra" target="_blank">LinkedIn</a>
+        <a href="https://linkedin.com/in/johnsonmugarra" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </footer>
