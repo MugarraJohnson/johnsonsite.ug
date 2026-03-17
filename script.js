@@ -5,7 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* 1. Scroll progress bar */
+  /* ── 1. Scroll progress bar ─────────────────────────────── */
   var bar = document.getElementById('progress-bar');
   window.addEventListener('scroll', function () {
     var pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }, { passive: true });
 
 
-  /* 2. Mobile menu */
+  /* ── 2. Mobile menu ─────────────────────────────────────── */
   var ham    = document.getElementById('ham');
   var mmenu  = document.getElementById('mob-menu');
   var mclose = document.getElementById('mob-close');
@@ -26,10 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  /* Scroll-reveal removed — sections are always visible */
-
-
-  /* 4. Skill bars animate in */
+  /* ── 3. Skill bars ──────────────────────────────────────── */
   var skillSection = document.getElementById('skill-bars');
   if (skillSection) {
     function animateBars() {
@@ -51,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  /* 5. Metrics counter */
+  /* ── 4. Metrics counter ─────────────────────────────────── */
   function countUp(el, target, duration) {
     if (!el) return;
     var start = null;
@@ -90,48 +87,66 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  /* 6. Project filter — animated fade + scale both ways */
+  /* ── 5. Project filter ──────────────────────────────────────
+     FIX: track pending timeouts per card so rapid clicking
+     never leaves a card stuck invisible from an old timeout.
+  ─────────────────────────────────────────────────────────── */
   var filterRow = document.getElementById('filter-row');
   if (filterRow) {
+
+    /* Store one timeout handle per card so we can cancel it */
+    var hideTimers = new WeakMap();
+
     filterRow.addEventListener('click', function (e) {
       var btn = e.target.closest('.filt');
       if (!btn) return;
 
-      document.querySelectorAll('.filt').forEach(function (b) { b.classList.remove('active'); });
+      /* Update active button */
+      document.querySelectorAll('.filt').forEach(function (b) {
+        b.classList.remove('active');
+      });
       btn.classList.add('active');
 
       var f = btn.getAttribute('data-f');
 
       document.querySelectorAll('.proj-card').forEach(function (card) {
-        var cats = (card.getAttribute('data-cat') || '').split(' ');
+        var cats  = (card.getAttribute('data-cat') || '').split(' ');
         var match = (f === 'all' || cats.indexOf(f) !== -1);
 
+        /* Cancel any pending hide timer for this card */
+        if (hideTimers.has(card)) {
+          clearTimeout(hideTimers.get(card));
+          hideTimers.delete(card);
+        }
+
         if (match) {
-          /* SHOW sequence:
-             1. Put card at opacity:0/shrunk while still display:none
-             2. Make it display:flex (remove .hidden)
-             3. Force browser to register the new display value (reflow)
-             4. Remove .hiding → CSS transition fires: opacity 0→1, scale 0.92→1  */
+          /* SHOW: start from invisible, unhide, reflow, then fade in */
           card.classList.add('hiding');
           card.classList.remove('hidden');
-          void card.offsetWidth;            /* <-- critical reflow */
+          void card.offsetWidth;          /* force reflow — critical */
           card.classList.remove('hiding');
         } else {
-          /* HIDE sequence:
-             1. Add .hiding → CSS transition fires: opacity 1→0, scale 1→0.92
-             2. After transition completes (290ms) set display:none  */
+          /* HIDE: fade out first, then set display:none after transition */
           card.classList.add('hiding');
-          setTimeout(function () {
+          var t = setTimeout(function () {
             card.classList.add('hidden');
+            hideTimers.delete(card);
           }, 300);
+          hideTimers.set(card, t);
         }
       });
     });
   }
 
-  var EJS_SERVICE  = 'service_51t4hfn';   // e.g. 'service_abc123'
-  var EJS_TEMPLATE = 'template_tutr40i';  // e.g. 'template_xyz456'
-  var EJS_KEY      = 'i8KrO_W-JbnVbaLqL';   // e.g. 'AbCdEfGhIjKlMnOp'
+
+  /* ── 6. Contact form via EmailJS ────────────────────────────
+     Your real credentials are set below.
+     EmailJS sends directly from the browser — works locally
+     AND when hosted. No server needed.
+  ─────────────────────────────────────────────────────────── */
+  var EJS_SERVICE  = 'service_51t4hfn';
+  var EJS_TEMPLATE = 'template_tutr40i';
+  var EJS_KEY      = 'i8KrO_W-JbnVbaLqL';
 
   var form    = document.getElementById('contact-form');
   var sendBtn = document.getElementById('send-btn');
@@ -151,13 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      /* Check EmailJS is configured */
-      if (EJS_SERVICE === 'YOUR_SERVICE_ID') {
-        /* Not set up yet — open mail client as reliable fallback */
-        openMailto(name, email, subject, message);
-        return;
-      }
-
       if (sendBtn) { sendBtn.disabled = true; sendBtn.textContent = 'Sending\u2026'; }
 
       emailjs.send(EJS_SERVICE, EJS_TEMPLATE, {
@@ -172,22 +180,40 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .catch(function (err) {
         console.error('EmailJS error:', err);
-        /* Graceful fallback to email client */
+        /* FIX: use hidden <a> instead of window.location.href
+           so the page URL never changes */
         openMailto(name, email, subject, message);
       })
       .finally(function () {
-        if (sendBtn) { sendBtn.disabled = false; sendBtn.textContent = 'Send message \u2192'; }
+        if (sendBtn) {
+          sendBtn.disabled = false;
+          sendBtn.textContent = 'Send message \u2192';
+        }
       });
     });
   }
 
+  /* ── openMailto ─────────────────────────────────────────────
+     FIX: creates a temporary invisible <a> and programmatically
+     clicks it instead of changing window.location.href.
+     This opens the email client WITHOUT touching the address bar
+     or navigating away from the page.
+  ─────────────────────────────────────────────────────────── */
   function openMailto(name, email, subject, message) {
-    var body = 'From: ' + name + ' <' + email + '>\n\n' + message;
-    window.location.href = 'mailto:johnsonmugarra@yahoo.com'
-      + '?subject=' + encodeURIComponent(subject)
-      + '&body='    + encodeURIComponent(body);
-    showMsg('success', '&#x2713; Your email client has opened — just hit Send!');
-    form.reset();
+    var body   = 'From: ' + name + ' <' + email + '>\n\n' + message;
+    var mailto = 'mailto:johnsonmugarra@yahoo.com'
+               + '?subject=' + encodeURIComponent(subject)
+               + '&body='    + encodeURIComponent(body);
+
+    var a = document.createElement('a');
+    a.href   = mailto;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    showMsg('success', '&#x2713; Your email client has opened \u2014 just hit Send!');
+    if (form) form.reset();
   }
 
   function showMsg(type, html) {
