@@ -309,7 +309,7 @@ h1.hero-name em {
   letter-spacing: .05em; text-transform: uppercase; line-height: 1.5;
 }
 
-.p-name { font-family: var(--syne); font-weight: 700; font-size: .95rem; text-align: center; }
+.p-name { font-family: var(--syne); font-weight: 700; font-size: 1.25rem; text-align: center; }
 .p-role { font-size: .7rem; color: var(--blue); letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
 .p-loc  { font-size: .76rem; color: var(--muted); display: flex; align-items: center; gap: .3rem; }
 .p-chips { display: flex; flex-wrap: wrap; gap: .32rem; justify-content: center; }
